@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="patient-entry">
+  
+  <h4>Patient Details</h4>
+  <b>city </b>: {{patient.city}} <br/>
+  <b>gender </b>: {{patient.gender}} <br/>
+  <b>civilID </b>: {{patient.civilID}} <br/>
+  <b>civilSerial </b>: {{patient.civilSerial}} <br/>
+  <b>dob </b>: {{patient.dob}} <br/>
+  <b>first </b>: {{patient.firstname}} <br/>
+  <b>last </b>: {{patient.lastname}} <br/>
+  
+  
+  <h3>List of Tests</h3>
+  {% for test in patient.patient_tests.all %}
+  <div class="test-entry">
+    <a href="{% url 'test_detail' test.pk %}">Test Details {{test.pk}}</a><br/>
+    <b>Time: </b> {{ test.datatime }}<br/>
+    <b>Test Notes: </b>{{ test.testNotes }} <br/>
+    <b>Test Result: </b>{{ test.testResult }}<br/>
+    <b>Created by</b> {{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</br>
+  </div>
+  {% endfor %}
+  
+</div>
+
+<br/>
+<a href="{% url 'patient_edit' patient.pk %}">Edit Patient</a>
+<a href="{% url 'patient_delete' patient.pk %}">Delete Patient</a>
+<a href="{% url 'test_new'%}">New Test</a>
+
+{% endblock content %}

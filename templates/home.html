@@ -7,17 +7,14 @@
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 
-  {% if user.role == 'lab' %}
-  <h1> Lab Tests </h1>
-  <div class='nav-right'>
-    <h1><a href="{%url 'test_new'%}">New Test</a></h1>
-  </div>
-    {% for test in object_list %}
-    <div class="test-entry">
-      <h2><a href="{% url 'test_detail' test.pk %}">{{ test.title }}</a></h2>
-      <p>{{ test.body }}</p>
-    </div>
-    {% endfor %}
+  {% if user.role == 'Lab' %} 
+    <h1> Lab Tests </h1>
+    <a href="{%url 'test_new'%}">New Test</a>
+    <a href="{%url 'tests_list'%}">Tests List </a>
+    
+    <h1>Patients</h1>
+    <a href="{%url 'patient_new'%}">New Patient</a>
+    <a href="{%url 'patients_list'%}">Patients List </a>
 
   {% else %}
   not lab

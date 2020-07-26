@@ -2,8 +2,11 @@
 
 {% block content %}
   <div class="test-entry">
-    <h2>{{ test.title }}</h2>
-    <p>{{ test.body }}</p>
+
+    <h4>Patient</h4>
+    <b>Name </b>: {{test.patient.firstname}}  {{test.patient.lastname}}<br/>
+    <b>civilID </b>: {{test.patient.civilID}} <br/>
+    <a href="{% url 'patient_detail' test.patient.pk %}">View Patient</a>
     
 <h4>Test Details</h4>
     <b>datatime </b>: {{test.datatime}} <br/>
