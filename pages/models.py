@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from users.models import CustomUser
+from django.urls import reverse
 
 
 class Test(models.Model):
@@ -10,6 +11,9 @@ class Test(models.Model):
     testNotes =  models.TextField()
     testResult =  models.NullBooleanField(choices=((None,''), (True,'Yes'), (False, 'No')),max_length=3, blank=True, null=True, default=None,)
     author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE,)
+    
+    def get_absolute_url(self):
+        return reverse("test_detail", kwargs={"pk": self.pk})
 
 class Citizen(models.Model):
     city = models.CharField(max_length = 25)

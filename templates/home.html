@@ -6,6 +6,24 @@
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+  {% if user.role == 'lab' %}
+  <h1> Lab Tests </h1>
+  <div class='nav-right'>
+    <h1><a href="{%url 'test_new'%}">New Test</a></h1>
+  </div>
+    {% for test in object_list %}
+    <div class="test-entry">
+      <h2><a href="{% url 'test_detail' test.pk %}">{{ test.title }}</a></h2>
+      <p>{{ test.body }}</p>
+    </div>
+    {% endfor %}
+
+  {% else %}
+  not lab
+  {% endif %}
+
+
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a> |
