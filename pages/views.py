@@ -7,9 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Test, Patient
 
-class HomePageView(TemplateView):
+class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test
     template_name = 'home.html'
+    login_url = 'login'
+
 
 ## Tests Views
 class TestsListView(LoginRequiredMixin, ListView):

@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="test-entry">
 
-    <h4>Patient</h4>
-    <b>Name </b>: {{test.patient.firstname}}  {{test.patient.lastname}}<br/>
-    <b>civilID </b>: {{test.patient.civilID}} <br/>
-    <a href="{% url 'patient_detail' test.patient.pk %}">View Patient</a>
-    
 <h4>Test Details</h4>
     <b>datatime </b>: {{test.datatime}} <br/>
     <b>lastModified </b>: {{test.lastModified}} <br/>
@@ -15,16 +9,18 @@
     <b>testNotes </b>: {{test.testNotes}} <br/>
     <b>testResult </b>: {{test.testResult}} <br/>
 
-    <h4>Created by</h4>
+    <h4>Patient</h4>
+    <b>Name </b>: <a href="{% url 'patient_detail' test.patient.pk %}">{{test.patient.firstname}}  {{test.patient.lastname}}</a><br/>
+    <b>civilID </b>: {{test.patient.civilID}} <br/>
+    
+  <br/>
+  <h4>Created by</h4>
     <b>username</b>: {{test.author.username}} <br/>
     <b>first_name</b>: {{test.author.first_name}} <br/>
     <b>last_name</b>: {{test.author.last_name}} <br/>
     <b>email</b>: {{test.author.email}} <br/>
     <b>role</b>: {{test.author.role}} <br/>
-    
-  </div>
 
-  <br/>
-  <a href="{% url 'test_edit' test.pk %}">Edit Test</a>
+  <a href="{% url 'test_edit' test.pk %}">Edit Test</a><br/>
   <a href="{% url 'test_delete' test.pk %}">Delete Test</a></p>
 {% endblock content %}
