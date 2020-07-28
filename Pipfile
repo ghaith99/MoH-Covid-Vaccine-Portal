@@ -13,6 +13,7 @@ django-qr-code = "*"
 pillow = "*"
 gunicorn = "==19.9.0"
 whitenoise = "==4.1.4"
+celery = "*"
 
 [requires]
 python_version = "3.8"
