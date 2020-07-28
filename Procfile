@@ -1,0 +1,1 @@
+web: gunicorn mohcovid.wsgi --log-file -

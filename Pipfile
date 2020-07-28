@@ -11,6 +11,7 @@ twilio = "~=6.0.0"
 django-crispy-forms = "==1.8.1"
 django-qr-code = "*"
 pillow = "*"
+gunicorn = "==19.9.0"
 
 [requires]
 python_version = "3.8"
