@@ -1,6 +1,10 @@
 {%extends 'base.html'%}
 {% load crispy_forms_tags %}
 
+{% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
+
+
 {% block content %}
 
 <h1>New Patient</h1>

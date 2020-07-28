@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
+{% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
+
 {% block title %}Patient List{% endblock title %}
 
 {% block content %}
 {% if user.is_authenticated %}
-  <h1> Patients </h1>
   <h3>List of Patients</h3>
   {% for patient in patient_list %}
   <div class="patient-entry">
-    <a href="{% url 'patient_detail' patient.pk %}">Patient Details {{patient.pk}}</a><br/>
+    <a href="{% url 'patient_detail' patient.pk %}">Patient Details {{patient.civilID}}</a><br/>
     <b>Patient: {{patient.firstname}} {{patient.lastname}} ({{patient.civilSerial}})</b> </br>
-    <b>Created by</b> {{patient.author.first_name}} {{patient.author.last_name}} ({{patient.author.username}}/{{patient.author.role}})</br>
+    <b>Created by</b> {{patient.author.username}} / {{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}})</br>
   </div>
   <br/> 
   {% endfor %}

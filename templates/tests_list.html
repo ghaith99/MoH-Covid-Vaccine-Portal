@@ -9,7 +9,7 @@
   <h3>List of Tests</h3>
   {% for test in test_list %}
   <div class="test-entry">
-    <a href="{% url 'test_detail' test.pk %}">Test Details {{test.pk}}</a><br/>
+    <a href="{% url 'test_detail' test.pk %}">Test Details</a><br/>
     <b>Patient:<a href="{% url 'patient_detail' test.patient.pk %}"> {{test.patient.firstname}} {{test.patient.lastname}} ({{test.patient.civilSerial}})</a></b> </br>
     <b>Time: </b> {{ test.datatime }}<br/>
     <b>Test Notes: </b>{{ test.testNotes }} <br/>

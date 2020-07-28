@@ -5,8 +5,8 @@ from django.urls import reverse
 import uuid
 
 class Patient(models.Model):
-
-    civilID = models.CharField(max_length = 25, verbose_name= ('Civil ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    civilID = models.CharField(max_length = 25,  unique=True, verbose_name= ('Civil ID'))
     civilSerial = models.CharField(max_length = 25, verbose_name= ('Civil ID Serial'))
     phone = models.CharField(max_length=20, verbose_name= ('Phone'))
     city = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('City'))
@@ -15,6 +15,7 @@ class Patient(models.Model):
     firstname  = models.CharField(max_length = 25, verbose_name= ('First Name'))
     lastname  = models.CharField(max_length = 25, verbose_name= ('Last Name'))
     symptoms  = models.TextField(blank=True, max_length=250, verbose_name= ('Symptoms'))
+    author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
 
     #Med Info
     BLOOD = (
@@ -48,6 +49,7 @@ class Patient(models.Model):
 
 
 class Hospital(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=50)
@@ -56,13 +58,13 @@ class Hospital(models.Model):
         return self.name
 
 class Test(models.Model):
-    uniqueID = models.CharField(max_length=100,null=True, blank=True, unique=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datatime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Data time'))
     lastModified = models.DateTimeField(auto_now = True, blank=True, verbose_name= ('Last Modified'))
     resultDate = models.DateTimeField(null=True, blank=True, verbose_name= ('Result Date'))
     testNotes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))
     testResult =  models.NullBooleanField(choices=((None,''), (True,'Positive'), (False, 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
-    completed = models.BooleanField(null=True, blank=True, verbose_name= ('Completed'))
+    completed = models.BooleanField(default = False,  verbose_name= ('Completed'))
     author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, verbose_name= ('Patient Civil ID'), related_name ='patient_tests')
     hospital = models.ForeignKey(Hospital, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Hospital'))
@@ -72,12 +74,15 @@ class Test(models.Model):
         return reverse("test_detail", kwargs={"pk": self.pk})
 
 class SMSNotification(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    datatime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Data time'))
     user = models.ForeignKey(Patient, on_delete=models.CASCADE)
     message = models.CharField(max_length=200)
     sent_timestamp = models.DateTimeField(auto_now_add=True)
     sent_status = models.BooleanField(default=False)
 
 class Appointment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
