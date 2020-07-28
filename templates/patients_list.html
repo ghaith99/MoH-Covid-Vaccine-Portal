@@ -4,10 +4,6 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-
-
   <h1> Patients </h1>
   <h3>List of Patients</h3>
   {% for patient in patient_list %}
@@ -20,8 +16,6 @@
   {% endfor %}
   
   
-  <a href="{%url 'patient_new'%}">New Patient</a>
-
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a> |

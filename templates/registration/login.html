@@ -27,9 +27,14 @@
                   <div class="text-center">
                     <a class="small" href="{% url 'password_reset'%}">Forgot Password?</a>
                   </div>
-                  <div class="text-center">
-                    <a class="small" href="{% url 'signup' %}">Create an Account!</a>
-                  </div>
+                  {% if user.is_authenticated %}
+                    {% if user.role == 'Admin' %} 
+                  
+                    <div class="text-center">
+                      <a class="small" href="{% url 'signup' %}">Create an Account!</a>
+                    </div>
+                    {% endif %}
+                  {% endif %}
                 </div>
               </div>
             </div>

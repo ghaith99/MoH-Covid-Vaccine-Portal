@@ -12,26 +12,14 @@
 
 {% if user.is_authenticated %}
 
-{% if user.role == 'Lab' %} 
-<h1> Lab Tests </h1>
-<a href="{%url 'test_new'%}">New Test</a>
-<a href="{%url 'tests_list'%}">Tests List </a>
-
-<h1>Patients</h1>
-<a href="{%url 'patient_new'%}">New Patient</a>
-<a href="{%url 'patients_list'%}">Patients List </a>
+  {% if user.role == 'Lab' %} 
+ 
+  {% else %}
+  {% endif %}
 
 {% else %}
-not lab
+
 {% endif %}
-
-
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a> |
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
-
 
 
 

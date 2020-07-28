@@ -4,11 +4,8 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
 
 
-  <h1> Lab Tests </h1>
   <h3>List of Tests</h3>
   {% for test in test_list %}
   <div class="test-entry">
@@ -17,18 +14,12 @@
     <b>Time: </b> {{ test.datatime }}<br/>
     <b>Test Notes: </b>{{ test.testNotes }} <br/>
     <b>Test Result: </b>{{ test.testResult }}<br/>
-    <b>Created by</b> {{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</br>
   </div>
   <br/> 
   {% endfor %}
   
-  
-  <a href="{%url 'test_new'%}">New Test</a>
 
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a> |
-  <a href="{% url 'signup' %}">Sign Up</a>
 {% endif %}
 
 
