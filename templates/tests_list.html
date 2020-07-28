@@ -1,27 +1,81 @@
 {% extends 'base.html' %}
 
-{% block title %}Test List{% endblock title %}
+{% load qr_code %}
+
+{% block FormSearchAction %} '/tests/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Test {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Tests List{% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
+  {% if user.role == 'Admin' %}
+  <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">List of Tests</h1>
+  <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+</div>
+  {% endif %}
 
-
-  <h3>List of Tests</h3>
+<!-- DataTales -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Patient's Tests</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Test Result</th>
+                  <th>Test Notes</th>
+                  <th>Patient Civil ID</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Time</th>
+                  <th>Test Result</th>
+                  <th>Test Notes</th>
+                  <th>Patient Civil ID</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
+                </tr>
+              </tfoot>
+              <tbody>         
   {% for test in test_list %}
-  <div class="test-entry">
-    <a href="{% url 'test_detail' test.pk %}">Test Details</a><br/>
-    <b>Patient:<a href="{% url 'patient_detail' test.patient.pk %}"> {{test.patient.firstname}} {{test.patient.lastname}} ({{test.patient.civilSerial}})</a></b> </br>
-    <b>Time: </b> {{ test.datatime }}<br/>
-    <b>Test Notes: </b>{{ test.testNotes }} <br/>
-    <b>Test Result: </b>{{ test.testResult }}<br/>
-  </div>
-  <br/> 
-  {% endfor %}
+                <tr>
+                  <td>{{ test.datatime }}</td>
+                  <td>{{ test.testResult }}</td>
+                  <td>{{ test.testNotes }}</td>
+                  <td><a href="{% url 'patient_detail' test.patient.pk %}"> {{test.patient.civilID}}</a></td>
+                  <td>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</td>
+                  <td>
+                    <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                    <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                    <a data-toggle="modal" data-target="#qrModal" href="#" class="btn btn-dark"><i class="fas fa-qrcode"></i></a>
+                  </td>
+                </tr>
+          {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
   
-
-{% else %}
-{% endif %}
-
-
+ <!-- qrModal Modal-->
+      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <center>
+            {% qr_from_text test.pk %}              <br/>        
+            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
+          </center>
+          </div>
+        </div>
+      </div>
 
 {% endblock content %}

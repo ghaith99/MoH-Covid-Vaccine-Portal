@@ -3,42 +3,135 @@
 {% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
 {% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
 
+{% block title %}Patient Details{% endblock title %}
 
 {% block content %}
-<div class="patient-entry">
-  
-  <h4>Patient Details</h4>
-  <b>city </b>: {{patient.city}} <br/>
-  <b>gender </b>: {{patient.gender}} <br/>
-  <b>civilID </b>: {{patient.civilID}} <br/>
-  <b>civilSerial </b>: {{patient.civilSerial}} <br/>
-  <b>dob </b>: {{patient.dob}} <br/>
-  <b>first </b>: {{patient.firstname}} <br/>
-  <b>last </b>: {{patient.lastname}} <br/>
-  
-  {% if user.is_authenticated %}
-  {% if user.role == 'Admin' %} 
-  <span class="badge badge-danger">Admin</span>  
-  <h3>List of Tests </h3> 
-  {% for test in patient.patient_tests.all %}
-  <div class="test-entry">
-    <a href="{% url 'test_detail' test.pk %}">Test Details {{test.pk}}</a><br/>
-    <b>Time: </b> {{ test.datatime }}<br/>
-    <b>Test Notes: </b>{{ test.testNotes }} <br/>
-    <b>Test Result: </b>{{ test.testResult }}<br/>
-    <b>Created by</b> {{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</br>
-  </div>
-  {% endfor %}
+ 
+ <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Patient Details </h1>
+    <div>
+      <a class="btn btn-sm btn-primary" href="{% url 'patient_edit' patient.pk %}">Update Patient</a>
+    {% if user.role == 'Admin' %}
+      <a class="btn btn-sm btn-danger" href="{% url 'patient_delete' patient.pk %}">Delete Patient</a>
   {% endif %}
-{% endif %}
-
-  
-  
+    </div>
 </div>
+<hr>
+  <div class="col-md-5">
 
-<br/>
-<a href="{% url 'patient_edit' patient.pk %}">Edit Patient</a>
-<a href="{% url 'patient_delete' patient.pk %}">Delete Patient</a>
-<a href="{% url 'test_new'%}">New Test</a>
-
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Civil ID </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{patient.civilID}}</p>
+      </div>
+    </div>
+                      
+  {% if user.role == 'Admin' or user.role == 'Field' %} 
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>First Name</b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.firstname}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Last Name</b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.lastname}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Birthday </b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.birthday}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>City </b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.city}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Gender </b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.gender}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Civil Serial </b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.civilSerial}}
+        </div>
+    </div>
+{% endif %}
+</div>
+ 
+ <hr>
+  {% if user.role == 'Admin' or user.role == 'Lab' %} 
+    <h3 class="mt-4">List of Tests <a class="btn btn-sm btn-primary" href="{% url 'test_new' %}?id={{ patient.pk }}">New Test</a>
+ </h3> 
+      <!-- DataTales -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Patient's Tests</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Test Result</th>
+                  <th>Test Notes</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Time</th>
+                  <th>Test Result</th>
+                  <th>Test Notes</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
+                </tr>
+              </tfoot>
+              <tbody>     
+        {% for test in patient.patient_tests.all %}
+                <tr>
+                  <td>{{ test.datatime }}</td>
+                  <td>{{ test.testResult }}</td>
+                  <td>{{ test.testNotes }}</td>
+                  <td>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</td>
+                  <td>
+                    <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                    {% if user.role == 'Admin' %}
+                      <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+          {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  {% endif %}
+  
 {% endblock content %}

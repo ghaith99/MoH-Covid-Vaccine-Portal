@@ -1,9 +1,33 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Edit Patient{% endblock title %}
+
 
 {% block content %}
-    <h1>Edit Patient</h1>
-    <form action="" method="post">{% csrf_token %}
-      {{ form.as_p }}
-    <input type="submit" value="Update" />
-</form>
+<div class="col-xl-12 col-lg-12 col-md-9">
+  <div class="card o-hidden border-0 shadow-lg my-5">
+    <!-- Nested Row within Card Body -->
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="p-5">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-1"></h1>
+            <div class="mb-4">
+            <h1>Edit Patient </h1>
+            <hr/>
+          </div>
+          </div>
+         <form action="" method='post'> {%csrf_token%}
+            {{form | crispy}}
+            <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

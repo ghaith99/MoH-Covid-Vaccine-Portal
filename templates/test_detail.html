@@ -1,26 +1,81 @@
 {% extends 'base.html' %}
 
+{% block FormSearchAction %} '/tests/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Test {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Test Details{% endblock title %}
+
 {% block content %}
 
-<h4>Test Details</h4>
-    <b>datatime </b>: {{test.datatime}} <br/>
-    <b>lastModified </b>: {{test.lastModified}} <br/>
-    <b>resultDate </b>: {{test.resultDate}} <br/>
-    <b>testNotes </b>: {{test.testNotes}} <br/>
-    <b>testResult </b>: {{test.testResult}} <br/>
+ <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Test Details </h1>
+ {% if user.role == 'Admin' %}
+    <div>
+      <a class="btn btn-sm btn-primary" href="{% url 'test_edit' test.pk %}">Update Test</a>
+      <a class="btn btn-sm btn-danger" href="{% url 'test_delete' test.pk %}">Delete Test</a>
+    </div>
+  {% endif %}
+</div>
 
-    <h4>Patient</h4>
-    <b>Name </b>: <a href="{% url 'patient_detail' test.patient.pk %}">{{test.patient.firstname}}  {{test.patient.lastname}}</a><br/>
-    <b>civilID </b>: {{test.patient.civilID}} <br/>
-    
-  <br/>
-  <h4>Created by</h4>
-    <b>username</b>: {{test.author.username}} <br/>
-    <b>first_name</b>: {{test.author.first_name}} <br/>
-    <b>last_name</b>: {{test.author.last_name}} <br/>
-    <b>email</b>: {{test.author.email}} <br/>
-    <b>role</b>: {{test.author.role}} <br/>
+<hr>
+  <div class="col-md-5">
+     <div class="row">
+      <div class="col-md-6">
+        <label><b> Patient (Civil ID) </b></label>
+      </div>
+      <div class="col-md-6">
+        <p><a href="{% url 'patient_detail' test.patient.pk %}">{{test.patient.civilID}} </a></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Test Created </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.datatime}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Test Last Updated </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.lastModified}} </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Result Date </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.resultDate}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Test Result </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.testResult}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Test Notes </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.testNotes}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Created By </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}}) </p>
+      </div>
+    </div>   
+  </div>
 
-  <a href="{% url 'test_edit' test.pk %}">Edit Test</a><br/>
-  <a href="{% url 'test_delete' test.pk %}">Delete Test</a></p>
 {% endblock content %}

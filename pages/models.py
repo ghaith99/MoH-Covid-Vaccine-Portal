@@ -10,8 +10,9 @@ class Patient(models.Model):
     civilSerial = models.CharField(max_length = 25, verbose_name= ('Civil ID Serial'))
     phone = models.CharField(max_length=20, verbose_name= ('Phone'))
     city = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('City'))
+    nationality = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Nationality'))
     gender = models.CharField(blank=True, max_length=1, choices=(('M', "Male"),('F', "Female")), verbose_name= ('Gender'))
-    birthday  =  models.DateTimeField(null=True, blank=True, verbose_name= ('Birthday'))
+    birthday  =  models.DateField(null=True, blank=True, verbose_name= ('Birthday'))
     firstname  = models.CharField(max_length = 25, verbose_name= ('First Name'))
     lastname  = models.CharField(max_length = 25, verbose_name= ('Last Name'))
     symptoms  = models.TextField(blank=True, max_length=250, verbose_name= ('Symptoms'))
@@ -48,7 +49,7 @@ class Patient(models.Model):
         return self.civilID
 
 
-class Hospital(models.Model):
+class TestingCenter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
@@ -63,11 +64,11 @@ class Test(models.Model):
     lastModified = models.DateTimeField(auto_now = True, blank=True, verbose_name= ('Last Modified'))
     resultDate = models.DateTimeField(null=True, blank=True, verbose_name= ('Result Date'))
     testNotes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))
-    testResult =  models.NullBooleanField(choices=((None,''), (True,'Positive'), (False, 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
+    testResult =  models.CharField(choices=((None,''), ('Positive','Positive'), ('Negative', 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
     completed = models.BooleanField(default = False,  verbose_name= ('Completed'))
     author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, verbose_name= ('Patient Civil ID'), related_name ='patient_tests')
-    hospital = models.ForeignKey(Hospital, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Hospital'))
+    testingCenter = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Testing Center'))
     smsStatus =  models.BooleanField(default = False, null=True, blank=True, verbose_name= ('SMS Sent'))
   
     def get_absolute_url(self):
@@ -86,7 +87,7 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    testingCenter = models.ForeignKey(TestingCenter, on_delete=models.CASCADE)
     startTime = models.TimeField()
     endTime = models.TimeField()
     date = models.DateField()

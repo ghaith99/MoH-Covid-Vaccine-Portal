@@ -3,27 +3,83 @@
 {% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
 {% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
 
-{% block title %}Patient List{% endblock title %}
+{% block title %}Patients List{% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  <h3>List of Patients</h3>
-  {% for patient in patient_list %}
-  <div class="patient-entry">
-    <a href="{% url 'patient_detail' patient.pk %}">Patient Details {{patient.civilID}}</a><br/>
-    <b>Patient: {{patient.firstname}} {{patient.lastname}} ({{patient.civilSerial}})</b> </br>
-    <b>Created by</b> {{patient.author.username}} / {{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}})</br>
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">List of Patients</h1>
+  
+  <a type="button" href={% url 'patient_new' %} class="btn btn-md btn-primary">
+  <i class="fas fa-plus fa-sm text-white-50"></i>
+  Add Patient</a>
+</div>
+
+  <!-- Pending Requests Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Patients</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{patient_list|length}}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-user fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <br/> 
-  {% endfor %}
-  
-  
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a> |
-  <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
 
-
+ <!-- DataTales -->
+  <div class="card shadow mt-5">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Patients</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Civil ID</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Phone</th>
+              <th>Created By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Civil ID</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Phone</th>
+              <th>Created By</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
+          <tbody>   
+  {% for patient in patient_list %}
+                   <tr>
+                  <td><a type="button" href="{% url 'patient_detail' patient.pk %}">{{patient.civilID}}</a></td>
+                  <td>{{patient.firstname}} {{patient.lastname}}</td>
+                  <td>{{patient.status}}</td>
+                  <td>{{patient.phone }}</td>
+                  <td>{{patient.author.username}}/{{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}}</td>
+                  <td>
+                    <a type="button" href="{% url 'patient_detail' patient.pk %}" class="btn btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'patient_edit' patient.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                    <a type="button" href="{% url 'patient_delete' patient.pk %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+    {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
 {% endblock content %}
