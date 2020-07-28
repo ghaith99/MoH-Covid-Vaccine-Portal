@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load qr_code %}
+
 {% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
 {% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
 
@@ -83,7 +85,7 @@
  
  <hr>
   {% if user.role == 'Admin' or user.role == 'Lab' %} 
-    <h3 class="mt-4">List of Tests <a class="btn btn-sm btn-primary" href="{% url 'test_new' %}?id={{ patient.pk }}">New Test</a>
+    <h3 class="mt-4">List of Patient's Tests <a class="btn btn-sm btn-primary" href="{% url 'test_new' %}?id={{ patient.pk }}">New Test</a>
  </h3> 
       <!-- DataTales -->
       <div class="card shadow mb-4">
@@ -119,10 +121,11 @@
                   <td>{{ test.testNotes }}</td>
                   <td>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</td>
                   <td>
-                    <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-primary"><i class="far fa-eye"></i></a>
-                    <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                    <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                    <a data-toggle="modal" data-target="#qrModal" href="#" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
                     {% if user.role == 'Admin' %}
-                      <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                      <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                     {% endif %}
                   </td>
                 </tr>
@@ -133,5 +136,17 @@
         </div>
       </div>
   {% endif %}
+
+  <!-- qrModal Modal-->
+      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <center>
+            {% qr_from_text test.pk %}              <br/>        
+            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
+          </center>
+          </div>
+        </div>
+      </div>
   
 {% endblock content %}
