@@ -14,6 +14,7 @@ pillow = "*"
 gunicorn = "==19.9.0"
 whitenoise = "==4.1.4"
 celery = "*"
+qrcode = {extras = ["pil"], version = "*"}
 
 [requires]
 python_version = "3.8"

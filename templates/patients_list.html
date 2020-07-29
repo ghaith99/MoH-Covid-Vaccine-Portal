@@ -23,7 +23,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> Registered (Weekly)</div>
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> (Weekly)</div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">10,000</div>
           </div>
           <div class="col-auto">
@@ -99,8 +99,8 @@
           <tbody>   
   {% for patient in patient_list %}
                    <tr>
-                  <td><a type="button" href="{% url 'patient_detail' patient.pk %}">{{patient.civilID}}</a></td>
-                  <td>{{patient.firstname}} {{patient.lastname}}</td>
+                  <td><a type="button" href="{% url 'patient_detail' patient.pk %}">{{patient.civil_ID}}</a></td>
+                  <td>{{patient.first_name}} {{patient.last_name}}</td>
                   <td>{{patient.status}}</td>
                   <td>{{patient.phone }}</td>
                   <td>{{patient.author.username}}/{{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}}</td>

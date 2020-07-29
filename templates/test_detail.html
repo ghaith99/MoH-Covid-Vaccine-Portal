@@ -25,39 +25,32 @@
         <label><b> Patient (Civil ID) </b></label>
       </div>
       <div class="col-md-6">
-        <p><a href="{% url 'patient_detail' test.patient.pk %}">{{test.patient.civilID}} </a></p>
+        <p><a href="{% url 'patient_detail' test.patient.pk %}">{{test.patient.civil_ID}} </a></p>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <label><b> Test Created </b></label>
+        <label><b> Mixed ? </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{test.datatime}}</p>
+        <p>{{ test.mixed }}</p>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <label><b> Test Last Updated </b></label>
+        <label><b> Symptoms ? </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{test.lastModified}} </p>
+        <p>{{ test.symptoms }}</p>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><b> Result Date </b></label>
-      </div>
-      <div class="col-md-6">
-        <p>{{test.resultDate}}</p>
-      </div>
-    </div>
+    </div>     
+                
     <div class="row">
       <div class="col-md-6">
         <label><b> Test Result </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{test.testResult}}</p>
+        <p>{{test.test_result}}</p>
       </div>
     </div>
     <div class="row">
@@ -65,7 +58,7 @@
         <label><b> Test Notes </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{test.testNotes}}</p>
+        <p>{{test.test_notes}}</p>
       </div>
     </div>
     <div class="row">
@@ -76,6 +69,33 @@
         <p>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}}) </p>
       </div>
     </div>   
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Test Last Updated </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.updated_datetime}} </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Sampling Date </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.sampling_datetime}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Result Date </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.result_datetime}}</p>
+      </div>
+    </div>
   </div>
+
+  <b> QR Code </b><br/>
+  <img src="/{{test.qr_code.url}}"></img>
 
 {% endblock content %}

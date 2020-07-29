@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% load qr_code %}
-
 {% block FormSearchAction %} '/tests/' {% endblock FormSearchAction %}
 {% block FormSearchPlaceHolder %} Search for Test {% endblock FormSearchPlaceHolder %}
 
@@ -26,37 +24,36 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Time Created</th>
-                  <th>Test Result</th>
-                  <th>Test Notes</th>
-                  <th>Patient Civil ID</th>
-                  <th>Created By</th>
+                  <th>Sampling Date</th>
+                  <th>Result Date</th>
+                  <th>Mixed ?</th>
+                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Time Created</th>
-                  <th>Test Result</th>
-                  <th>Test Notes</th>
-                  <th>Patient Civil ID</th>
-                  <th>Created By</th>
+                  <th>Sampling Date</th>
+                  <th>Result Date</th>
+                  <th>Mixed ?</th>
+                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </tfoot>
-              <tbody>         
-   {% for test in test_list %}
+                <tbody>     
+        {% for test in test_list %}
                 <tr>
-                  <td>{{ test.datatime }}</td>
-                  <td>{{ test.testResult }}</td>
-                  <td>{{ test.testNotes }}</td>
-                  <td><a href="{% url 'patient_detail' test.patient.pk %}"> {{test.patient.civilID}}</a></td>
-                  <td>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</td>
+                  <td>{{ test.sampling_datetime }}</td>
+                  <td>{{ test.result_datetime }}</td>
+                  <td>{{ test.mixed }}</td>
+                  <td>{{ test.symptoms }}</td>
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a data-toggle="modal" data-target="#qrModal" href="#" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
-                    <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
+                    <a href="/{{test.qr_code.url}}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+                    {% if user.role == 'Admin' %}
+                      <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
                   </td>
                 </tr>
           {% endfor %}
@@ -71,7 +68,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
           <center>
-            {% qr_from_text test.pk %}              <br/>        
+            <img src="/{{test.qr_code.url}}"></img>            <br/>        
             <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
           </center>
           </div>

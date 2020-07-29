@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1dcc88f32d54c66786d72eed4454311aebb52793f83315bd29b1a657c52005ad"
+            "sha256": "44487e6119a9ca604bf6fb46b10e50f9862658f755f063a200e5d89a62edc0ec"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -180,10 +180,14 @@
             "version": "==2020.1"
         },
         "qrcode": {
+            "extras": [
+                "pil"
+            ],
             "hashes": [
                 "sha256:3996ee560fc39532910603704c82980ff6d4d5d629f9c3f25f34174ce8606cf5",
                 "sha256:505253854f607f2abf4d16092c61d4e9d511a3b4392e60bff957a68592b04369"
             ],
+            "index": "pypi",
             "version": "==6.1"
         },
         "requests": {

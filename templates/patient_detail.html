@@ -27,7 +27,7 @@
         <label><b> Civil ID </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{patient.civilID}}</p>
+        <p>{{patient.civil_ID}}</p>
       </div>
     </div>
                       
@@ -37,7 +37,7 @@
         <label><b>First Name</b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.firstname}}
+          {{patient.first_name}}
         </div>
     </div>
     <div class="row">
@@ -45,7 +45,7 @@
         <label><b>Last Name</b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.lastname}}
+          {{patient.last_name}}
         </div>
     </div>
     <div class="row">
@@ -77,9 +77,18 @@
         <label><b>Civil Serial </b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.civilSerial}}
+          {{patient.civil_serial}}
         </div>
     </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Created By</b></label> 
+        </div>
+        <div class="col-md-6">
+          {{patient.author.first_name}} {{patient.author.last_name}} {{patient.author.username}}/{{patient.author.role}}
+        </div>
+    </div>
+    
 {% endif %}
 </div>
  
@@ -97,29 +106,29 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Time</th>
-                  <th>Test Result</th>
-                  <th>Test Notes</th>
-                  <th>Created By</th>
+                  <th>Sampling Date</th>
+                  <th>Result Date</th>
+                  <th>Mixed ?</th>
+                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Time</th>
-                  <th>Test Result</th>
-                  <th>Test Notes</th>
-                  <th>Created By</th>
+                  <th>Sampling Date</th>
+                  <th>Result Date</th>
+                  <th>Mixed ?</th>
+                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </tfoot>
               <tbody>     
         {% for test in patient.patient_tests.all %}
                 <tr>
-                  <td>{{ test.datatime }}</td>
-                  <td>{{ test.testResult }}</td>
-                  <td>{{ test.testNotes }}</td>
-                  <td>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}})</td>
+                  <td>{{ test.sampling_datetime }}</td>
+                  <td>{{ test.result_datetime }}</td>
+                  <td>{{ test.mixed }}</td>
+                  <td>{{ test.symptoms }}</td>
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
