@@ -1,0 +1,21 @@
+{%load static%}
+
+<script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+
+<center>
+    <img style="width:150px;height:150px;" src="https://seeklogo.com/images/M/ministry-of-health-kuwait-logo-4F6BD8E365-seeklogo.com.png" alt="" srcset=""><br/>
+    <img src="/{{qrcode}}"> </img>
+    <br/>
+    <br/>
+    <p style='font-size:x-large;'> <b>Sample Date:</b> {{sample_date}} </p>
+    
+    <button href="#" onclick=" window.print()"> Print </button>
+    
+</center>
+
+<script>
+    
+    window.addEventListener("beforeprint", function(event) { $("button").hide(); });
+    window.addEventListener("afterprint", function(event) { $("button").show(); });
+    
+</script>

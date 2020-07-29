@@ -132,7 +132,7 @@
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a data-toggle="modal" data-target="#qrModal" href="#" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+                    <a href="/{{test.qr_code.url}}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
                     {% if user.role == 'Admin' %}
                       <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                     {% endif %}
@@ -146,16 +146,4 @@
       </div>
   {% endif %}
 
-  <!-- qrModal Modal-->
-      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          <center>
-            {% qr_from_text test.pk %}              <br/>        
-            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
-          </center>
-          </div>
-        </div>
-      </div>
-  
 {% endblock content %}

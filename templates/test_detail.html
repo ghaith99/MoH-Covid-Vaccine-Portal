@@ -12,6 +12,8 @@
   <h1 class="h3 mb-0 text-gray-800">Test Details </h1>
  {% if user.role == 'Admin' %}
     <div>
+      <a href="{% url 'tests_qrcode' test.pk %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-qrcode fa-sm text-white-50"></i> Print QR Code</a>
+
       <a class="btn btn-sm btn-primary" href="{% url 'test_edit' test.pk %}">Update Test</a>
       <a class="btn btn-sm btn-danger" href="{% url 'test_delete' test.pk %}">Delete Test</a>
     </div>
@@ -93,9 +95,14 @@
         <p>{{test.result_datetime}}</p>
       </div>
     </div>
+     <div class="row">
+      <div class="col-md-6">
+        <label>  <b> QR Code </b></label>
+      </div>
+      <div class="col-md-6">
+        <p><a href="{% url 'tests_qrcode' test.pk %}"> Print QR </a></p>
+      </div>
+    </div>
   </div>
-
-  <b> QR Code </b><br/>
-  <img src="/{{test.qr_code.url}}"></img>
 
 {% endblock content %}

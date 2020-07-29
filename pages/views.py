@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.views.generic import ListView, DetailView
+from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
@@ -8,10 +9,16 @@ from django.shortcuts import redirect
 from datetime import datetime
 from django import forms
 from django.db import models
-
 from mohcovid.utils import checkandSendSMS
-
 from .models import Test, Patient
+from django.shortcuts import render
+
+class TestsQRView(View):
+    
+    def get(self, request, pk, *args, **kwargs):
+        test = Test.objects.get(pk=pk)
+        return render(request, "qrcode.html", {'qrcode': test.qr_code.url,
+        'sample_date':test.sampling_datetime.strftime("%Y-%m-%d")})
 
 class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test
@@ -49,22 +56,31 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
     model = Test
     template_name = 'test_new.html'
     login_url = 'login'
-    fields = ['completed', 'patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'test_notes',]
+    fields = '__all__'
     
     def get_initial(self): #auto populate patient if GET request with id
-        # if self.request.user.role == 'Admin':
-        #     self.fields = "__all__"
-        # elif self.request.user.role == 'Lab':
-        #     self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'test_notes', ]
-        # elif self.request.user.role == 'Field':
-        #     self.fields = ['patient', 'sampling_datetime', 'symptoms', 'mixed', ]
-
+   
         initial = super(TestCreateView, self).get_initial()
         query = self.request.GET.get('id')
         if query:
             initial['patient'] = Patient.objects.get(id=query)
         return initial
- 
+
+    def get_form(self, form_class=None): #override to inject roles to fields visibility before form_class() calls form factory
+        if self.request.user.role == 'Admin':
+            self.fields = '__all__'
+        elif self.request.user.role == 'Lab':
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'test_notes', ]
+        elif self.request.user.role == 'Field':
+            self.fields = ['patient', 'sampling_datetime', 'symptoms', 'mixed', ]
+
+        if form_class is None:
+            form_class = self.get_form_class()
+        
+        form = form_class(**self.get_form_kwargs())
+        return form
+
+        
     def form_valid(self, form): #bind author of the test
         print("Form Valid")
         test = form.save(commit=False)

@@ -105,9 +105,9 @@
                   <td>{{patient.phone }}</td>
                   <td>{{patient.author.username}}/{{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}}</td>
                   <td>
-                    <a type="button" href="{% url 'patient_detail' patient.pk %}" class="btn btn-primary"><i class="far fa-eye"></i></a>
-                    <a type="button" href="{% url 'patient_edit' patient.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                    <a type="button" href="{% url 'patient_delete' patient.pk %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                    <a type="button" href="{% url 'patient_detail' patient.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'patient_edit' patient.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                    <a type="button" href="{% url 'patient_delete' patient.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                   </td>
                 </tr>
     {% endfor %}
