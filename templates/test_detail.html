@@ -10,14 +10,13 @@
  <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Test Details </h1>
- {% if user.role == 'Admin' %}
     <div>
-      <a href="{% url 'tests_qrcode' test.pk %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-qrcode fa-sm text-white-50"></i> Print QR Code</a>
-
+      <a href="{% url 'test_qrcode' test.pk %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-qrcode fa-sm text-white-50"></i> Print QR Code</a>
       <a class="btn btn-sm btn-primary" href="{% url 'test_edit' test.pk %}">Update Test</a>
+ {% if user.role == 'Admin' %}
       <a class="btn btn-sm btn-danger" href="{% url 'test_delete' test.pk %}">Delete Test</a>
-    </div>
   {% endif %}
+    </div>
 </div>
 
 <hr>
@@ -45,8 +44,24 @@
       <div class="col-md-6">
         <p>{{ test.symptoms }}</p>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Sample Date </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.sample_datetime}}</p>
+      </div>
     </div>     
-                
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Result Date </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.result_datetime}}</p>
+      </div>
+    </div>            
+     {% if user.role == 'Admin' or user.role == 'Lab'%}
     <div class="row">
       <div class="col-md-6">
         <label><b> Test Result </b></label>
@@ -63,6 +78,23 @@
         <p>{{test.test_notes}}</p>
       </div>
     </div>
+    {% endif %}
+      <div class="row">
+      <div class="col-md-6">
+        <label><b> Testing Center </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.testing_center.name}}</p>
+      </div>
+    </div>
+        <div class="row">
+      <div class="col-md-6">
+        <label><b> Screening Center </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{test.screening_center.name}}</p>
+      </div>
+    </div>  
     <div class="row">
       <div class="col-md-6">
         <label><b> Created By </b></label>
@@ -79,30 +111,7 @@
         <p>{{test.updated_datetime}} </p>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><b> Sampling Date </b></label>
-      </div>
-      <div class="col-md-6">
-        <p>{{test.sampling_datetime}}</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><b> Result Date </b></label>
-      </div>
-      <div class="col-md-6">
-        <p>{{test.result_datetime}}</p>
-      </div>
-    </div>
-     <div class="row">
-      <div class="col-md-6">
-        <label>  <b> QR Code </b></label>
-      </div>
-      <div class="col-md-6">
-        <p><a href="{% url 'tests_qrcode' test.pk %}"> Print QR </a></p>
-      </div>
-    </div>
+     
   </div>
 
 {% endblock content %}

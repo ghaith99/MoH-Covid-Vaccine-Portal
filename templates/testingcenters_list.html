@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block FormSearchAction %} '/testingcenters/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Testing Center {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Testing Centers List{% endblock title %}
+
+{% block content %}
+  {% if user.role == 'Admin' %}
+  <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">List of Testing Centers</h1>
+  <a href="{% url 'testingcenter_new'%}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Testing Center</a>
+
+</div>
+  {% endif %}
+
+<!-- DataTales -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Testing Centers</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Phone</th>
+                  <th> Testing Count </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Phone</th>
+                  <th> Testing Count </th>
+                  <th>Actions</th>
+                </tr>
+              </tfoot>
+                <tbody>     
+        {% for testingcenter in testingcenter_list %}
+                <tr>
+                  <td><a href="{% url 'testingcenter_detail' testingcenter.pk %}">{{ testingcenter.name }}</a></td>
+                  <td>{{ testingcenter.address }}</td>
+                  <td>{{ testingcenter.phone }}</td>
+                  <td>
+                    <a type="button" href="{% url 'testingcenter_detail' testingcenter.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
+                    <a type="button" href="{% url 'testingcenter_edit' testingcenter.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                    {% if user.role == 'Admin' %}
+                      <a type="button" href="{% url 'testingcenter_delete' testingcenter.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+          {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+ <!-- qrModal Modal-->
+      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <center>
+            <img src="/{{testingcenter.qr_code.url}}"></img>            <br/>        
+            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
+          </center>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}

@@ -10,7 +10,7 @@ from datetime import datetime
 from django import forms
 from django.db import models
 from mohcovid.utils import checkandSendSMS
-from .models import Test, Patient
+from ..models import Test, Patient
 from django.shortcuts import render
 
 class TestsQRView(View):
@@ -18,7 +18,7 @@ class TestsQRView(View):
     def get(self, request, pk, *args, **kwargs):
         test = Test.objects.get(pk=pk)
         return render(request, "qrcode.html", {'qrcode': test.qr_code.url,
-        'sample_date':test.sampling_datetime.strftime("%Y-%m-%d")})
+        'sample_date':test.sample_datetime.strftime("%Y-%m-%d")})
 
 class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test
@@ -56,7 +56,7 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
     model = Test
     template_name = 'test_new.html'
     login_url = 'login'
-    fields = '__all__'
+    fields = []
     
     def get_initial(self): #auto populate patient if GET request with id
    
@@ -68,9 +68,9 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
 
     def get_form(self, form_class=None): #override to inject roles to fields visibility before form_class() calls form factory
         if self.request.user.role == 'Admin':
-            self.fields = '__all__'
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'testing_center','test_notes', 'completed']
         elif self.request.user.role == 'Lab':
-            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'test_notes', ]
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'testing_center','test_notes', 'completed']
         elif self.request.user.role == 'Field':
             self.fields = ['patient', 'sampling_datetime', 'symptoms', 'mixed', ]
 
@@ -79,7 +79,6 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
         
         form = form_class(**self.get_form_kwargs())
         return form
-
         
     def form_valid(self, form): #bind author of the test
         print("Form Valid")
@@ -91,8 +90,22 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
 class TestUpdateView(LoginRequiredMixin, UpdateView):
     model = Test
     template_name = 'test_edit.html'
-    fields = ['completed','result_datetime', 'test_result','test_notes',]
+    fields = []
     login_url = 'login'
+
+    def get_form(self, form_class=None): #override to inject roles to fields visibility before form_class() calls form factory
+        if self.request.user.role == 'Admin':
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'testing_center','test_notes', 'completed',]
+        elif self.request.user.role == 'Lab':
+            self.fields = ['test_result', 'result_datetime', 'symptoms', 'mixed','lab_doctor', 'testing_center', 'test_notes', 'completed',]
+        elif self.request.user.role == 'Field':
+            self.fields = ['symptoms', 'mixed', ]
+
+        if form_class is None:
+            form_class = self.get_form_class()
+        
+        form = form_class(**self.get_form_kwargs())
+        return form
 
 class TestDeleteView(LoginRequiredMixin, DeleteView):
     model = Test
@@ -132,9 +145,9 @@ class PatientCreateForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = ["civil_ID", "phone","comments"]
-        
     
 class PatientCreateView(LoginRequiredMixin, CreateView):
+    
     template_name = 'patient_new.html'
     login_url = 'login'
     form_class = PatientCreateForm
@@ -155,7 +168,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
                 patient.author = self.request.user
                 patient.save()
 
-                test = Test()#field_user = self.request.user)
+                test = Test(author = self.request.user)
                 test.patient = patient
                 test.mixed = form['mixed'].value()
                 test.symptoms = form['symptoms'].value()
@@ -176,7 +189,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
 class PatientUpdateView(LoginRequiredMixin, UpdateView):
     model = Patient
     template_name = 'patient_edit.html'
-    fields = ["civil_ID", "phone","comments"]
+    fields = ["phone","comments"]
     login_url = 'login'
 
 class PatientDeleteView(LoginRequiredMixin, DeleteView):
@@ -184,3 +197,4 @@ class PatientDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'patient_delete.html'
     success_url = reverse_lazy('home')
     login_url = 'login'
+

@@ -10,7 +10,10 @@
   <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">List of Tests</h1>
+  <div>
+    <a type="button" href={% url 'patient_new' %} class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i>Add Test</a>
   <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+  </div>
 </div>
   {% endif %}
 
@@ -24,33 +27,30 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Sampling Date</th>
+                  <th>Civil ID</th>
+                  <th>Sample Date</th>
                   <th>Result Date</th>
-                  <th>Mixed ?</th>
-                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>Sampling Date</th>
+                  <th>Civil ID</th>
+                  <th>Sample Date</th>
                   <th>Result Date</th>
-                  <th>Mixed ?</th>
-                  <th>Symptoms ?</th>
                   <th>Actions</th>
                 </tr>
               </tfoot>
                 <tbody>     
         {% for test in test_list %}
                 <tr>
-                  <td>{{ test.sampling_datetime }}</td>
+                  <td><a href="{% url 'patient_detail' test.patient.pk %}">{{ test.patient.civil_ID }}</a></td>
+                  <td>{{ test.sample_datetime }}</td>
                   <td>{{ test.result_datetime }}</td>
-                  <td>{{ test.mixed }}</td>
-                  <td>{{ test.symptoms }}</td>
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a href="/{{test.qr_code.url}}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+                    <a href="{% url 'test_qrcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
                     {% if user.role == 'Admin' %}
                       <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                     {% endif %}

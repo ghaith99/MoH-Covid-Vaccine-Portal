@@ -16,7 +16,7 @@
       <a class="btn btn-sm btn-primary" href="{% url 'patient_edit' patient.pk %}">Update Patient</a>
     {% if user.role == 'Admin' %}
       <a class="btn btn-sm btn-danger" href="{% url 'patient_delete' patient.pk %}">Delete Patient</a>
-  {% endif %}
+   {% endif %}
     </div>
 </div>
 <hr>
@@ -93,7 +93,6 @@
 </div>
  
  <hr>
-  {% if user.role == 'Admin' or user.role == 'Lab' %} 
     <h3 class="mt-4">List of Patient's Tests <a class="btn btn-sm btn-primary" href="{% url 'test_new' %}?id={{ patient.pk }}">New Test</a>
  </h3> 
       <!-- DataTales -->
@@ -106,7 +105,7 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Sampling Date</th>
+                  <th>Sample Date</th>
                   <th>Result Date</th>
                   <th>Mixed ?</th>
                   <th>Symptoms ?</th>
@@ -115,7 +114,7 @@
               </thead>
               <tfoot>
                 <tr>
-                  <th>Sampling Date</th>
+                  <th>Sample Date</th>
                   <th>Result Date</th>
                   <th>Mixed ?</th>
                   <th>Symptoms ?</th>
@@ -125,14 +124,14 @@
               <tbody>     
         {% for test in patient.patient_tests.all %}
                 <tr>
-                  <td>{{ test.sampling_datetime }}</td>
+                  <td>{{ test.sample_datetime }}</td>
                   <td>{{ test.result_datetime }}</td>
                   <td>{{ test.mixed }}</td>
                   <td>{{ test.symptoms }}</td>
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a href="/{{test.qr_code.url}}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+                    <a href="{% url 'test_qrcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
                     {% if user.role == 'Admin' %}
                       <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                     {% endif %}
@@ -144,6 +143,5 @@
           </div>
         </div>
       </div>
-  {% endif %}
 
 {% endblock content %}

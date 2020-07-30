@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block FormSearchAction %} '/screeningcenters/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Screening Center {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Screening Center Details{% endblock title %}
+
+{% block content %}
+
+ <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Screening Center Details </h1>
+    <div>
+ {% if user.role == 'Admin' %}
+      <a class="btn btn-sm btn-primary" href="{% url 'screeningcenter_edit' screeningcenter.pk %}">Update Screening Center</a>
+      <a class="btn btn-sm btn-danger" href="{% url 'screeningcenter_delete' screeningcenter.pk %}">Delete Screening Center</a>
+  {% endif %}
+    </div>
+</div>
+
+<hr>
+  <div class="col-md-5">
+     <div class="row">
+      <div class="col-md-6">
+        <label><b> Screeing Center Name </b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{screeningcenter.name}} </a></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Screening Center Phone</b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{ screeningcenter.phone }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b> Screening Center Address</b></label>
+      </div>
+      <div class="col-md-6">
+        <p>{{ screeningcenter.address }}</p>
+      </div>
+    </div>
+     
+  </div>
+
+{% endblock content %}

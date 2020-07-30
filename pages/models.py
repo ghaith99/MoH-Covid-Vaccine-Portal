@@ -4,9 +4,7 @@ from users.models import CustomUser
 from django.urls import reverse
 import uuid
 import qrcode
-from django.utils.crypto import get_random_string
 from django.conf import settings
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw
 from io import BytesIO
 from django.core.files import File
@@ -63,6 +61,20 @@ class TestingCenter(models.Model):
 
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse("testingcenter_detail", kwargs={"pk": self.pk})
+       
+class ScreeningCenter(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("screeningcenter_detail", kwargs={"pk": self.pk})
 
 class Test(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -73,18 +85,20 @@ class Test(models.Model):
     symptoms = models.CharField(default = 'False', choices=(('False','False'), ('True', 'True')), max_length=10, null=True, blank=True, verbose_name= ('Covid Symptoms'))
     lab_doctor = models.CharField(max_length=25, null=True, blank=True, verbose_name= ('Lab Doctor'))
     test_result =  models.CharField(choices=((None,''), ('Positive','Positive'), ('Negative', 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
-    testing_center = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Testing Center'))
+    testing_center = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Testing Center'), related_name ='testingcenter_tests')
+    screening_center = models.ForeignKey(ScreeningCenter, null=True, blank=True, on_delete=models.CASCADE, verbose_name= ('Screening Center'),related_name ='screeningcenter_tests')
     test_notes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))
+    author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
     field_user = models.ForeignKey(settings.AUTH_USER_MODEL,null = True, blank = True,on_delete=models.CASCADE, verbose_name= ('Field User'), related_name='field_user')
     lab_user = models.ForeignKey(settings.AUTH_USER_MODEL,null = True, blank = True, on_delete=models.CASCADE, verbose_name= ('Lab User'), related_name='lab_user')
     sms_status =  models.BooleanField(default = False, null=True, blank=True, verbose_name= ('SMS Sent'))
     result_datetime = models.DateTimeField(null=True, blank=True, verbose_name= ('Result Date'))
     updated_datetime = models.DateTimeField(auto_now = True, blank=True, verbose_name= ('Updated Date'))
-    sampling_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Sampling Date'))
+    sample_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Sampling Date'))
     
     def save(self, *args, **kwargs):
         img = qrcode.make(str(self.id)) 
-        canvas = Image.new('RGB', (350,350), 'white')
+        canvas = Image.new('RGB', (350,370), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(img)
         filename = "qr\\"+str(self.id) +".png"

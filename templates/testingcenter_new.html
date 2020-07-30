@@ -1,33 +1,33 @@
-{% extends 'base.html' %}
-
+{%extends 'base.html'%}
 {% load crispy_forms_tags %}
 
-{% block FormSearchAction %} '/tests/' {% endblock FormSearchAction %}
-{% block FormSearchPlaceHolder %} Search for Test {% endblock FormSearchPlaceHolder %}
+{% block FormSearchAction %} '/testingcenters/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Testing Center {% endblock FormSearchPlaceHolder %}
 
-{% block title %}Update Test{% endblock title %}
+{% block title %}New Testing Center{% endblock title %}
 
 {% block content %}
+
 <div class="col-xl-12 col-lg-12 col-md-9">
   <div class="card o-hidden border-0 shadow-lg my-5">
     <!-- Nested Row within Card Body -->
     <div class="row justify-content-center">
       <div class="col-lg-7">
-        <div class="p-5">
+        <div class="pb-5">
           <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-1"></h1>
+            <h1 class="h4 text-gray-900 mb-4"></h1>
             <div class="mb-4">
-            <h1>Update Test </h1>
-            <hr/>
+            <h1>Create New Testing Center </h1>
           </div>
           </div>
+          <hr>
          <form action="" method='post'> {%csrf_token%}
             {{form | crispy}}
-            <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Save</button>
         </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock content %}
+{%endblock content%}

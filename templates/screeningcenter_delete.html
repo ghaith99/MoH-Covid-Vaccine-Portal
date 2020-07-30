@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block FormSearchAction %} '/screeningcenters/' {% endblock FormSearchAction %}
+{% block FormSearchPlaceHolder %} Search for Screening Center {% endblock FormSearchPlaceHolder %}
+
+{% block title %}Delete Screening Center{% endblock title %}
+
+{% block content %}
+    <h1>Delete screeningcenter</h1>
+    <form action="" method="post">{% csrf_token %}
+      <p>Are you sure you want to delete "{{ screeningcenter.name }}"?</p>
+      <input type="submit" value="Confirm" />
+    </form>
+{% endblock content %}
