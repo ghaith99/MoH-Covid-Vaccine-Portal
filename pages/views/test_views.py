@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 from django import forms
 from django.db import models
-from mohcovid.utils import checkandSendSMS
+from mohcovid.utils import send_sms
 from ..models import Test, Patient
 from django.shortcuts import render
 from django.core.paginator import Paginator
@@ -21,6 +21,7 @@ from django.conf import settings
 from PIL import Image, ImageDraw
 from io import BytesIO
 from django.core.files import File 
+
 
 
 class TestsQRView(View):
@@ -151,7 +152,7 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
         test.author = self.request.user
         #update result time on result update + the person who updates the lab result is the doctor
         if(test.test_result is not None): 
-           test.result_datetime = datetime.now() 
+           test.result_datetime = datetime.now()
            test.lab_doctor = self.request.user
         #confirm doctor is specified when updating the result
         # if(test.lab_doctor is None and test.test_result is not None ):
