@@ -12,6 +12,9 @@ from django.db import models
 from mohcovid.utils import checkandSendSMS
 from ..models import Test, Patient
 from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+import math
 
 class TestsQRView(View):
     
@@ -30,15 +33,53 @@ class TestsListView(LoginRequiredMixin, ListView):
     template_name = "tests_list.html"
     login_url = 'login'
     model = Test
+
     def get_queryset(self): #Filter Patients
         query = self.request.GET.get('q')
         if query:
-            object_list = self.model.objects.filter(id=query)
-            return object_list
+            object_list = self.model.objects.filter(id=query).order_by('sample_datetime')
         else: 
             if self.request.user.role == 'Admin':
-                return self.model.objects.all()
-            return self.model.objects.filter(author=self.request.user)
+                object_list= self.model.objects.all()
+            else: 
+                object_list = self.model.objects.filter(author=self.request.user).order_by('-sample_datetime') # filter on user tests only
+
+        paginator = Paginator(object_list, 10)
+        page = self.request.GET.get('page')
+        if page and page != "":
+            tests = paginator.get_page(page)
+            print(tests)
+        else:
+            tests = paginator.get_page(1)
+        return tests
+
+class TestsPagination(View):
+    
+    def get(self, request, *args, **kwargs):
+        tests = Test.objects.all()
+        total = tests.count()
+        page = 1
+        per_page = 2
+        _start = request.GET.get('start')
+        _length = request.GET.get('length')
+        if _start and _length:
+            start = int(_start)
+            length = int(_length)
+            page = math.ceil(start / length) + 1
+            per_page = length
+
+            tests = tests[start:start + length]
+
+        data = [test.to_dict_json() for test in tests]
+        response = {
+            'data': data,
+            'page': page,  # [optional]
+            'per_page': per_page,  # [optional]
+            'recordsTotal': total,
+            'recordsFiltered': total,
+        }
+        return JsonResponse(response)
+
 
 class TestDetailView(LoginRequiredMixin, DetailView):
     model = Test
@@ -50,16 +91,14 @@ class TestDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         return context
     
-
 class TestCreateView(LoginRequiredMixin,  CreateView):
-    result_datetime = forms.DateTimeField(input_formats=['%d/%m/%Y'])
-    model = Test
+    # form_class = TestCreateForm
     template_name = 'test_new.html'
     login_url = 'login'
-    fields = []
+    model = Test
+    fields = '__all__'
     
     def get_initial(self): #auto populate patient if GET request with id
-   
         initial = super(TestCreateView, self).get_initial()
         query = self.request.GET.get('id')
         if query:
@@ -67,23 +106,41 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
         return initial
 
     def get_form(self, form_class=None): #override to inject roles to fields visibility before form_class() calls form factory
+        
         if self.request.user.role == 'Admin':
-            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'screening_center','testing_center','test_notes', 'completed']
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'screening_center','testing_center','test_notes', ]
         elif self.request.user.role == 'Lab':
-            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'screening_center', 'testing_center','test_notes', 'completed']
+            self.fields = ['patient', 'test_result', 'symptoms', 'mixed', 'lab_doctor', 'screening_center', 'testing_center','test_notes',]
         elif self.request.user.role == 'Field':
-            self.fields = ['patient', 'sampling_datetime','screening_center', 'symptoms', 'mixed', ]
+            self.fields = [ 'patient','screening_center', 'symptoms', 'mixed',]
 
         if form_class is None:
             form_class = self.get_form_class()
         
-        form = form_class(**self.get_form_kwargs())
+        form = form_class(**self.get_form_kwargs()) #pass to the new form the fields defined
+
+        if self.request.user.role in ['Field','Lab']:
+            form.fields['patient'].disabled = True
+  
+        result_datetime = forms.DateTimeField(input_formats=['%d/%m/%Y'])
+        patient = forms.CharField()
+        sample_datetime = forms.DateTimeField(input_formats=['%d/%m/%Y'])
         return form
         
-    def form_valid(self, form): #bind author of the test
-        print("Form Valid")
+    def form_valid(self, form): #bind author of the test + set result time
         test = form.save(commit=False)
+        
+        #bind test to user
         test.author = self.request.user
+        #update result time on result update + the person who updates the lab result is the doctor
+        if(test.test_result is not None): 
+           test.result_datetime = datetime.now() 
+           test.lab_doctor = self.request.user
+        #confirm doctor is specified when updating the result
+        # if(test.lab_doctor is None and test.test_result is not None ):
+        #     form.add_error('lab_doctor', "Lab Doctor has to be set to update the result.")
+        #     return super().form_invalid(form)
+
         test.save()
         return super().form_valid(form) # rediret to detailview
 
@@ -95,9 +152,9 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None): #override to inject roles to fields visibility before form_class() calls form factory
         if self.request.user.role == 'Admin':
-            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'testing_center', 'screening_center', 'test_notes', 'completed',]
+            self.fields = ['patient', 'test_result', 'result_datetime', 'symptoms', 'mixed', 'lab_doctor', 'testing_center', 'screening_center', 'test_notes',]
         elif self.request.user.role == 'Lab':
-            self.fields = ['test_result', 'result_datetime', 'symptoms', 'mixed','lab_doctor', 'testing_center', 'screening_center', 'test_notes', 'completed',]
+            self.fields = ['test_result', 'symptoms', 'mixed','lab_doctor', 'testing_center', 'screening_center', 'test_notes',]
         elif self.request.user.role == 'Field':
             self.fields = ['symptoms', 'mixed', ]
 
@@ -106,6 +163,15 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
         
         form = form_class(**self.get_form_kwargs())
         return form
+    
+    def form_valid(self, form): 
+        test = form.save(commit=False)
+        if(test.test_result is not None): # if result is updated then set the current time to the result date
+           test.result_datetime = datetime.now() 
+           test.lab_doctor = self.request.user
+        test.save()
+        return super().form_valid(form) # rediret to detailview
+
 
 class TestDeleteView(LoginRequiredMixin, DeleteView):
     model = Test

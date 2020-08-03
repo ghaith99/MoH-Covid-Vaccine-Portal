@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, TestsQRView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
+from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, TestsPagination, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, TestsQRView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
 
 from django.views.generic.base import TemplateView
 
@@ -11,6 +11,8 @@ urlpatterns = [
         path('test/<uuid:pk>', TestDetailView.as_view(), name='test_detail'),
         path('tests/', TestsListView.as_view(), name='tests_list'),
         path('test/<uuid:pk>/qrcode', TestsQRView.as_view(), name='test_qrcode'),
+        path('api/tests/', TestsPagination.as_view(), name='tests_json'),
+
 
         path('patient/<uuid:pk>/delete/', PatientDeleteView.as_view(), name='patient_delete'),
         path('patient/<uuid:pk>/edit/', PatientUpdateView.as_view(), name='patient_edit'),

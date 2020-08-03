@@ -80,9 +80,8 @@
             <tr>
               <th>Civil ID</th>
               <th>Name</th>
-              <th>Status</th>
+              <th>Nationality</th>
               <th>Phone</th>
-              <th>Created By</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -90,29 +89,37 @@
             <tr>
               <th>Civil ID</th>
               <th>Name</th>
-              <th>Status</th>
+              <th>Nationality</th>
               <th>Phone</th>
-              <th>Created By</th>
               <th>Actions</th>
             </tr>
           </tfoot>
           <tbody>   
-  {% for patient in patient_list %}
+  {% for patient in object_list.object_list %}
                    <tr>
                   <td><a type="button" href="{% url 'patient_detail' patient.pk %}">{{patient.civil_ID}}</a></td>
-                  <td>{{patient.first_name}} {{patient.last_name}}</td>
-                  <td>{{patient.status}}</td>
-                  <td>{{patient.phone }}</td>
-                  <td>{{patient.author.username}}/{{patient.author.first_name}} {{patient.author.last_name}}/{{patient.author.role}}</td>
+                  {% if not user.role == 'Lab' %}
+                    <td>{{patient.first_name}} {{patient.last_name}}</td>
+                    <td>{{patient.nationality}}</td>
+                    <td>{{patient.phone }}</td>
+                  {% else %}
+                  <td> Private </td>
+                  <td> Private </td>
+                  <td> Private </td>
+                  {% endif %}
                   <td>
                     <a type="button" href="{% url 'patient_detail' patient.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'patient_edit' patient.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                   {% if user.role == 'Admin' %} 
                     <a type="button" href="{% url 'patient_delete' patient.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
                   </td>
                 </tr>
     {% endfor %}
+
               </tbody>
             </table>
+                 {%include '_pagination.html'%}
           </div>
         </div>
       </div>

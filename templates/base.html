@@ -310,12 +310,16 @@
         $("#id_result_datetime").datepicker({
           format:'yyyy-mm-dd',
         });
+      });
 
         $('#dataTable').DataTable({
-          dom: 'Bfrtip',
+          'dom': 'Bfrtip',
+          'paging': false,
+          'searching': false, 
+          'info': false //hide search box and Entries number
         });
-      });
       </script>  
-
+      {% block js %}
+      {% endblock js %}
     </body>
     </html>    

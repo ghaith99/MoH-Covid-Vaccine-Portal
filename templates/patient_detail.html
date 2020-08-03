@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% load qr_code %}
-
 {% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
 {% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
 
@@ -31,13 +29,16 @@
       </div>
     </div>
                       
-  {% if user.role == 'Admin' or user.role == 'Field' %} 
     <div class="row">
       <div class="col-md-6">
         <label><b>First Name</b></label> 
         </div>
         <div class="col-md-6">
+{% if user.role == 'Admin' or user.role == 'Field' %} 
           {{patient.first_name}}
+{% else %}
+          Private
+{% endif %}
         </div>
     </div>
     <div class="row">
@@ -45,7 +46,11 @@
         <label><b>Last Name</b></label> 
         </div>
         <div class="col-md-6">
+{% if user.role == 'Admin' or user.role == 'Field' %} 
           {{patient.last_name}}
+{% else %}
+          Private
+{% endif %}
         </div>
     </div>
     <div class="row">
@@ -53,7 +58,23 @@
         <label><b>Birthday </b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.birthday}}
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+        {{patient.birthday}}
+{% else %}
+          Private
+{% endif %}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label><b>Phone Number </b></label> 
+        </div>
+        <div class="col-md-6">
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+        {{patient.phone}}
+{% else %}
+          Private
+{% endif %}
         </div>
     </div>
     <div class="row">
@@ -61,7 +82,11 @@
         <label><b>City </b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.city}}
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+         {{patient.city}}
+{% else %}
+          Private
+{% endif %}
         </div>
     </div>
     <div class="row">
@@ -69,15 +94,22 @@
         <label><b>Gender </b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.gender}}
-        </div>
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+         {{patient.gender}}
+{% else %}
+          Private
+{% endif %}        </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <label><b>Civil Serial </b></label> 
         </div>
         <div class="col-md-6">
-          {{patient.civil_serial}}
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+         {{patient.civil_serial}}
+{% else %}
+          Private
+{% endif %}
         </div>
     </div>
     <div class="row">
@@ -88,9 +120,7 @@
           {{patient.author.first_name}} {{patient.author.last_name}} {{patient.author.username}}/{{patient.author.role}}
         </div>
     </div>
-    
-{% endif %}
-</div>
+    </div>
  
  <hr>
     <h3 class="mt-4">List of Patient's Tests <a class="btn btn-sm btn-primary" href="{% url 'test_new' %}?id={{ patient.pk }}">New Test</a>

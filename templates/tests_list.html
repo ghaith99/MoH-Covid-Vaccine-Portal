@@ -11,16 +11,22 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">List of Tests</h1>
   <div>
-    <a type="button" href={% url 'patient_new' %} class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i>Add Test</a>
+    <a type="button" href={% url 'test_new' %} class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i>Add Test</a>
   <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
   </div>
 </div>
   {% endif %}
 
+{% if posts.has_previous %}
+<a href="?page=1">First</a>
+<a href="?page={{ posts.previous_page_number }}">Pr\
+evious</a>
+{% endif %}
+
 <!-- DataTales -->
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Patient's Tests</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Patients Tests</h6>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -42,7 +48,7 @@
                 </tr>
               </tfoot>
                 <tbody>     
-        {% for test in test_list %}
+        {% for test in object_list.object_list %}
                 <tr>
                   <td><a href="{% url 'patient_detail' test.patient.pk %}">{{ test.patient.civil_ID }}</a></td>
                   <td>{{ test.sample_datetime }}</td>
@@ -59,20 +65,11 @@
           {% endfor %}
               </tbody>
             </table>
+             {%include '_pagination.html'%}
           </div>
         </div>
       </div>
+
   
- <!-- qrModal Modal-->
-      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          <center>
-            <img src="/{{test.qr_code.url}}"></img>            <br/>        
-            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
-          </center>
-          </div>
-        </div>
-      </div>
 
 {% endblock content %}
