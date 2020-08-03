@@ -15,12 +15,29 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 import math
+import base64
+import qrcode
+from django.conf import settings
+from PIL import Image, ImageDraw
+from io import BytesIO
+from django.core.files import File 
+
 
 class TestsQRView(View):
     
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs): #QR Image generation
+
         test = Test.objects.get(pk=pk)
-        return render(request, "qrcode.html", {'qrcode': test.qr_code.url,
+        print(str(test.id))
+        img = qrcode.make(str(test.id)) 
+        canvas = Image.new('RGB', (350,370), 'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(img)
+        buffer = BytesIO()
+        canvas.save(buffer, 'PNG')
+        canvas.close()
+        buffer.seek(0)
+        return render(request, "qrcode.html", {'qrcode': (base64.b64encode(buffer.read()).decode()),
         'sample_date':test.sample_datetime.strftime("%Y-%m-%d")})
 
 class HomePageView(LoginRequiredMixin, TemplateView):

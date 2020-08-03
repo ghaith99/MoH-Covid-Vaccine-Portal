@@ -69,8 +69,6 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
                 patient.gender = patientData['PR_SEX']
                 patient.author = self.request.user
                 patient.save()
-
-                #checkandSendSMS.delay()
             else:
                 form.add_error('civil_ID', "Civil ID is Wrong!")
                 return super().form_invalid(form)
