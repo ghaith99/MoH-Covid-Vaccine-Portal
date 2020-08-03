@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 from django import forms
 from django.db import models
-from mohcovid.utils import checkandSendSMS
+from mohcovid.utils import send_sms
 from ..models import Test, Patient
 from django.shortcuts import render
 
