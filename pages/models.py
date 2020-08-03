@@ -30,8 +30,7 @@ class Patient(models.Model):
     
     def __str__(self):
         return self.civil_ID
-    
-        
+     
     class Meta:
        ordering = ['-created_datetime']
 
@@ -78,18 +77,6 @@ class Test(models.Model):
     updated_datetime = models.DateTimeField(auto_now = True, blank=True, verbose_name= ('Updated Date'))
     sample_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Sample Date'))
     
-    def save(self, *args, **kwargs): #QR Image generation
-        img = qrcode.make(str(self.id)) 
-        canvas = Image.new('RGB', (350,370), 'white')
-        draw = ImageDraw.Draw(canvas)
-        canvas.paste(img)
-        filename = "qr\\"+str(self.id) +".png"
-        buffer = BytesIO()
-        canvas.save(buffer, 'PNG')
-        self.qr_code.save(filename, File(buffer), save=False)
-        canvas.close()
-        super().save(*args, **kwargs)
-
     def to_dict_json(self): # for Datatable pagination
         return {
             'pk': self.pk,
@@ -106,7 +93,6 @@ class Test(models.Model):
 class SMSNotification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datatime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Data time'))
-    user = models.ForeignKey(Patient, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete= models.CASCADE, related_name ='test_smses')
     message = models.CharField(max_length=200)
     sent_timestamp = models.DateTimeField(auto_now_add=True)
