@@ -4,6 +4,7 @@
 {% block FormSearchPlaceHolder %} Search for Testing Center {% endblock FormSearchPlaceHolder %}
 
 {% block title %}Testing Centers List{% endblock title %}
+{% block TestingCentersActiveNavItem %}active{% endblock TestingCentersActiveNavItem %}">
 
 {% block content %}
   {% if user.role == 'Admin' %}
@@ -62,16 +63,4 @@
         </div>
       </div>
   
- <!-- qrModal Modal-->
-      <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          <center>
-            <img src="/{{testingcenter.qr_code.url}}"></img>            <br/>        
-            <button class="btn btn-secondary mb-4" type="button" data-dismiss="modal">OK</button>
-          </center>
-          </div>
-        </div>
-      </div>
-
 {% endblock content %}

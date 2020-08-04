@@ -18,10 +18,10 @@ class Patient(models.Model):
     phone = models.CharField(max_length=20, verbose_name= ('Phone'))
     city = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('City'))
     nationality = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Nationality'))
-    gender = models.CharField(blank=True, max_length=1, choices=(('M', "Male"),('F', "Female")), verbose_name= ('Gender'))
+    gender = models.CharField(blank=True, max_length=10, choices=(('M', "Male"),('F', "Female")), verbose_name= ('Gender'))
     birthday  =  models.DateField(null=True, blank=True, verbose_name= ('Birthday'))
     first_name  = models.CharField(max_length = 25, verbose_name= ('First Name'))
-    last_name  = models.CharField(max_length = 25, verbose_name= ('Last Name'))
+    last_name  = models.CharField(max_length = 40, verbose_name= ('Last Name'))
     author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
     comments = models.TextField(null=True, blank=True, max_length=700, verbose_name= ('Comments'))
   

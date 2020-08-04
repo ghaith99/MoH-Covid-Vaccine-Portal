@@ -61,7 +61,7 @@
       </a>
       
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item {% block HomeActiveNavItem %}{% endblock HomeActiveNavItem %}">
         <a class="nav-link" href="{%url 'home'%}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -70,7 +70,7 @@
       {% if user.is_authenticated %}
         
          <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item {% block PatientsActiveNavItem %}{% endblock PatientsActiveNavItem %}">
           <a class="nav-link collapsed" href="{%url 'patients_list'%}" aria-expanded="true" >
             <i class="fas fa-fw fa-hospital-user"></i>
             <span>Patients</span>
@@ -80,7 +80,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider"> 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item {% block TestsActiveNavItem %}{% endblock TestsActiveNavItem %}">
           <a class="nav-link collapsed" href="{%url 'tests_list'%}">
             <i class="fas fa-fw fa-vial"></i>
             <span>Lab Tests</span>
@@ -88,7 +88,7 @@
         </li>
         <hr class="sidebar-divider">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item {% block ScreeningCentersActiveNavItem %}{% endblock ScreeningCentersActiveNavItem %}">
           <a class="nav-link collapsed" href="{%url 'screeningcenters_list'%}" >
             <i class="fas fa-fw fa-star-and-crescent"></i>
             <span>Screening Centers</span>
@@ -96,7 +96,7 @@
         </li>
         <hr class="sidebar-divider">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item {% block TestingCentersActiveNavItem %}{% endblock TestingCentersActiveNavItem %}">
           <a class="nav-link collapsed" href="{%url 'testingcenters_list'%}" >
             <i class="fas fa-fw fa-hospital-alt"></i>
             <span>Labs</span>

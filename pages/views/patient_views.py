@@ -81,6 +81,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
             x = requests.post('https://cpkw.org/api/moh_mock/', {'civil_id':form['civil_ID'].value()},  verify=False)
             if (x.status_code == 200):
                 patientData =  json.loads(x.text)  
+                print(patientData)
                 patient.city = patientData['PR_DISTRICT']
                 patient.civil_serial = patientData['PR_SERIAL_NO']
                 patient.birthday = datetime.strptime(patientData['PR_BIRTH_DATE'], "%Y%M%d")
