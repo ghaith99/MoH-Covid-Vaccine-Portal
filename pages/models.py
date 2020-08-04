@@ -92,10 +92,12 @@ class Test(models.Model):
 
 class SMSNotification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    datatime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Data time'))
-    test = models.ForeignKey(Test, on_delete= models.CASCADE, related_name ='test_smses')
+    datetime = models.DateTimeField(auto_now_add=True, blank=True, verbose_name= ('Created Data time'))
+    update_time = models.DateTimeField(auto_now=True)
+    test = models.ForeignKey(
+        Test, on_delete=models.CASCADE, related_name='test_smses'
+    )
     message = models.CharField(max_length=200)
-    sent_timestamp = models.DateTimeField(auto_now_add=True)
     sent_status = models.BooleanField(default=False)
 
 class Appointment(models.Model):
