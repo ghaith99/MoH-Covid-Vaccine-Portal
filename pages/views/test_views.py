@@ -165,21 +165,16 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
 
         # bind test to user
         test.author = self.request.user
+        
         # update result time on result update + the person
         # who updates the lab result is the doctor
         if test.test_result is not None:
             test.result_datetime = datetime.now()
             test.lab_doctor = self.request.user
+            obj = SMSNotification.objects.create(test=test, message='negative')
+            send_sms([obj], 1)
+        
         test.save()
-        obj = SMSNotification.objects.create(test=test, message='negative')
-        send_sms([obj], 1)
-        # confirm doctor is specified when updating the result
-        # if(test.lab_doctor is None and test.test_result is not None ):
-        #     form.add_error(
-        #         'lab_doctor',
-        #         "Lab Doctor has to be set to update the result."
-        #     )
-        #     return super().form_invalid(form)
 
         return super().form_valid(form)  # rediret to detailview
 

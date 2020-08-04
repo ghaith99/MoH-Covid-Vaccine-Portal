@@ -3,29 +3,25 @@ from datetime import datetime
 from users.models import CustomUser
 from django.urls import reverse
 import uuid
-import qrcode
-from django.conf import settings
-from PIL import Image, ImageDraw
-from io import BytesIO
-from django.core.files import File 
+
 
 class Patient(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Date'))
-    civil_ID = models.CharField(max_length = 25,  unique=True, verbose_name= ('Civil ID'))
-    civil_serial = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Civil ID Serial'))
-    passport_number = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Passport Number'))
-    phone = models.CharField(max_length=20, verbose_name= ('Phone'))
-    city = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('City'))
-    nationality = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Nationality'))
+    created_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name =('Created Date'))
+    civil_ID = models.CharField(max_length=25, unique=True, verbose_name=('Civil ID'))
+    civil_serial = models.CharField(null=True, blank=True, max_length=25, verbose_name=('Civil ID Serial'))
+    passport_number = models.CharField(null=True, blank=True, max_length=25, verbose_name=('Passport Number'))
+    phone = models.CharField(max_length=20, verbose_name=('Phone'))
+    city = models.CharField(null=True, blank=True, max_length = 25, verbose_name =('City'))
+    nationality = models.CharField(null=True, blank = True, max_length = 25, verbose_name = ('Nationality'))
     gender = models.CharField(blank=True, max_length=1, choices=(('M', "Male"),('F', "Female")), verbose_name= ('Gender'))
-    birthday  =  models.DateField(null=True, blank=True, verbose_name= ('Birthday'))
-    first_name  = models.CharField(max_length = 25, verbose_name= ('First Name'))
-    last_name  = models.CharField(max_length = 25, verbose_name= ('Last Name'))
-    author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
-    comments = models.TextField(null=True, blank=True, max_length=700, verbose_name= ('Comments'))
-  
-    def get_absolute_url(self):
+    birthday = models.DateField(null=True, blank=True, verbose_name= ('Birthday'))
+    first_name = models.CharField(max_length=25, verbose_name= ('First Name'))
+    last_name = models.CharField(max_length=25, verbose_name= ('Last Name'))
+    author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name=('Author'))
+    comments = models.TextField(null=True, blank=True, max_length=700, verbose_name=('Comments'))
+
+   def get_absolute_url(self):
         return reverse("patient_detail", kwargs={"pk": self.pk})
     
     def __str__(self):
@@ -90,6 +86,13 @@ class Test(models.Model):
     class Meta:
         ordering = ['-sample_datetime']
 
+
+class SMSMessage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    test = models.OneToOneField(Test)
+    message = models.CharField(max_length=200)
+
+
 class SMSNotification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     datetime = models.DateTimeField(auto_now_add=True, blank=True, verbose_name= ('Created Data time'))
@@ -97,8 +100,9 @@ class SMSNotification(models.Model):
     test = models.ForeignKey(
         Test, on_delete=models.CASCADE, related_name='test_smses'
     )
-    message = models.CharField(max_length=200)
+    message = models.ForeignKey(SMSMessage)
     sent_status = models.BooleanField(default=False)
+
 
 class Appointment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
