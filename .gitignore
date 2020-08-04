@@ -4,6 +4,7 @@ __pycache__/
 .env
 db.sqlite3hero
 node_modules
+.vscode
 media
 staticfiles
 .idea
