@@ -207,7 +207,6 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
         return form
 
     def form_valid(self, form):
-        print('hereeee')
         test = form.save(commit=False)
         # if result is updated then set the current time to the result date
         if test.test_result is not None:
@@ -220,7 +219,6 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
         )
         obj.message = test.test_result
         obj.save()
-        print('here')
         send_sms([obj], 1)
         return super().form_valid(form)  # rediret to detailview
 

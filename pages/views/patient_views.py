@@ -47,13 +47,34 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
     template_name = 'patient_detail.html'
     login_url = 'login'
     
-class PatientCreateView(LoginRequiredMixin, CreateView):
-    
+class PatientCreateForm(forms.ModelForm):
+    YES_NO = (
+        ('No', 'No'),
+        ('Yes', 'Yes'),
+    )
+    mixed = forms.CharField(widget=forms.Select(choices=YES_NO),max_length=3)
+    symptoms = forms.CharField(widget=forms.Select(choices=YES_NO),max_length=3)
+
+    class Meta:
+        model = Patient
+        fields = ["civil_ID", "phone"]
+
+class PatientCreateView(LoginRequiredMixin, CreateView):   
     template_name = 'patient_new.html'
+    form_class = PatientCreateForm
     login_url = 'login'
     model = Patient
-    fields = ["civil_ID", "phone","comments"]
-    
+
+    # def get_form(self, form_class=None):
+    #     mixed = forms.CharField(widget=forms.Select(choices=(('False','False'), ('True', 'True'))))
+    #     symptoms = forms.CharField(widget=forms.Select(choices=(('False','False'), ('True', 'True'))))
+
+    #     if form_class is None:
+    #         form_class = self.get_form_class()
+    #     form = form_class(**self.get_form_kwargs()) #pass to the new form the fields defined
+
+    #     return form
+
     def form_valid(self, form):
         patient = form.save(commit=False)
         try:
@@ -62,13 +83,21 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
                 patientData =  json.loads(x.text)  
                 patient.city = patientData['PR_DISTRICT']
                 patient.civil_serial = patientData['PR_SERIAL_NO']
-                patient.birthday = datetime.strptime(patientData['PR_BIRTH_DATE'],"%Y%M%d")
+                patient.birthday = datetime.strptime(patientData['PR_BIRTH_DATE'], "%Y%M%d")
                 patient.first_name = patientData['PR_ARAB_NAME1']
-                patient.last_name = patientData['PR_ARAB_NAME2']+" "+ patientData['PR_ARAB_NAME3']+" "+patientData['PR_ARAB_NAME4']
+                patient.last_name = patientData['PR_ARAB_NAME2'] + " " + patientData['PR_ARAB_NAME3']+" "+patientData['PR_ARAB_NAME4']
                 patient.nationality = patientData['PR_NATIONALITY']
                 patient.gender = patientData['PR_SEX']
                 patient.author = self.request.user
                 patient.save()
+
+                test = Test()
+                test.author = self.request.user
+                test.patient = patient
+                test.mixed = form['mixed'].value()
+                test.symptoms = form['symptoms'].value()
+                test.save()
+
             else:
                 form.add_error('civil_ID', "Civil ID is Wrong!")
                 return super().form_invalid(form)
@@ -80,15 +109,16 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form) # rediret to detailview
 
+
 class PatientUpdateView(LoginRequiredMixin, UpdateView):
     model = Patient
     template_name = 'patient_edit.html'
-    fields = ["phone","comments"]
+    fields = ["phone", "comments"]
     login_url = 'login'
+
 
 class PatientDeleteView(LoginRequiredMixin, DeleteView):
     model = Patient
     template_name = 'patient_delete.html'
     success_url = reverse_lazy('home')
     login_url = 'login'
-
