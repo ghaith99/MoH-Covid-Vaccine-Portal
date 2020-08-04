@@ -91,10 +91,10 @@ class Test(models.Model):
         ordering = ['-sample_datetime']
 
 
-class SMSMessage(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    test = models.OneToOneField(Test)
-    message = models.CharField(max_length=200)
+# class SMSMessage(models.Model):
+#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     test = models.OneToOneField(Test)
+#     message = models.CharField(max_length=200)
 
 
 class SMSNotification(models.Model):
@@ -104,7 +104,7 @@ class SMSNotification(models.Model):
     test = models.ForeignKey(
         Test, on_delete=models.CASCADE, related_name='test_smses'
     )
-    message = models.ForeignKey(SMSMessage)
+    message = models.CharField(max_length=200)#models.ForeignKey(SMSMessage)
     sent_status = models.BooleanField(default=False)
 
 
