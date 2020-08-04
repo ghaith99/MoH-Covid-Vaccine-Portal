@@ -23,7 +23,7 @@ class TestsQRView(View):
     def get(self, request, pk, *args, **kwargs):  # QR Image generation
 
         test = Test.objects.get(pk=pk)
-        print(str(test.id))
+        # print(str(test.id))
         img = qrcode.make(str(test.id))
         canvas = Image.new('RGB', (350, 370), 'white')
         ImageDraw.Draw(canvas)
