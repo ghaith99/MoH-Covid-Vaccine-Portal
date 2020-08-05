@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, TestsPagination, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, TestsQRView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
+from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, TestsPagination, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, CheckPatientCivilID, TestsQRView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
 
 from django.views.generic.base import TemplateView
 
@@ -19,6 +19,7 @@ urlpatterns = [
         path('patient/new', PatientCreateView.as_view(), name='patient_new'),
         path('patient/<uuid:pk>', PatientDetailView.as_view(), name='patient_detail'),
         path('patients/', PatientsListView.as_view(), name='patients_list'),
+        path('check_civilID/', CheckPatientCivilID.as_view(), name='check_civilID'),
       
         path('screeningcenter/<uuid:pk>/delete/', ScreeningCenterDeleteView.as_view(), name='screeningcenter_delete'),
         path('screeningcenter/<uuid:pk>/edit/', ScreeningCenterUpdateView.as_view(), name='screeningcenter_edit'),

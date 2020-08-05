@@ -13,6 +13,33 @@ from mohcovid.utils import send_sms
 from ..models import Test, Patient
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+
+
+class CheckPatientCivilID(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+
+        civil_id = request.GET.get('civil_id')
+
+        x = requests.post('https://cpkw.org/api/moh_mock/', {'civil_id':civil_id},  verify=False)
+        if (x.status_code == 200):
+            patientData =  json.loads(x.text)  
+            # patient = Patient.objects.get_or_create(civil_ID=civil_id, author = self.request.user)
+            print(patientData)
+            response = {
+                'civil_ID': patientData['PR_CIVNO'],
+                'city': patientData['PR_DISTRICT'],
+                'civil_serial': patientData['PR_SERIAL_NO'],
+                #'birthday': datetime.strptime(patientData['PR_BIRTH_DATE'], "%Y%M%d"),  
+                'first_name': patientData['PR_ARAB_NAME1'],
+                'last_name': patientData['PR_ARAB_NAME2'] + " " + patientData['PR_ARAB_NAME3']+" "+patientData['PR_ARAB_NAME4'],
+                'nationality': patientData['PR_NATIONALITY'],
+                'gender': "M" if patientData['PR_SEX'] == 'ذكر' else "F"
+            }
+
+        return JsonResponse(response)
+
 
 ##Patients Views
 class PatientsListView(LoginRequiredMixin, ListView):
@@ -57,7 +84,7 @@ class PatientCreateForm(forms.ModelForm):
 
     class Meta:
         model = Patient
-        fields = ["civil_ID", "phone"]
+        fields = ["civil_ID", "first_name", "last_name", "city", "nationality", "gender", "phone"]
 
 class PatientCreateView(LoginRequiredMixin, CreateView):   
     template_name = 'patient_new.html'

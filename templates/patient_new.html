@@ -21,7 +21,16 @@
           </div>
           </div>
           <hr>
-            <form action="" method='post' autocomplete="off"> {%csrf_token%}
+
+      <form id='civilid_form'>
+          <div class="form-group">
+            <label>Civil ID</label>
+            <input name="civilid" type='text'class="form-control"></input>
+          </div>
+            <button type="submit" onclick="check_civilID()" class="btn btn-primary btn-user btn-block">Next</button>
+      </form>
+
+            <form id="addpatient_form"action="" method='post' autocomplete="off"> {%csrf_token%}
                 {{form | crispy}}      
                 <button type="submit" class="btn btn-primary btn-user btn-block">Save</button>
             </form>
@@ -30,5 +39,41 @@
     </div>
   </div>
 </div>
+
+{% block js %}
+<script>
+ $(document).ready(function() {
+    console.log('loaded');
+        if ($(".invalid-feedback").length > 0 ){
+          document.getElementById('civilid_form').style.display = "none";
+          document.getElementById('addpatient_form').style.display = "block";
+        }
+        else{
+          document.getElementById('civilid_form').style.display = "block";
+          document.getElementById('addpatient_form').style.display = "none";
+        } 
+    });
+
+
+function check_civilID(){
+  	event.preventDefault();
+    form = document.getElementById('civilid_form'); 
+    $.get( "/check_civilID/?civil_id="+form.civilid.value, function( data ) {
+        
+        console.log(data);
+        form.style.display = "none";
+        
+        add_form = document.getElementById('addpatient_form'); 
+        add_form.style.display = "block";
+        add_form.civil_ID.value =  data['civil_ID']
+        add_form.first_name.value =  data['first_name']
+        add_form.last_name.value =  data['last_name']
+        add_form.city.value =  data['city']
+        add_form.nationality.value =  data['nationality']
+        add_form.gender.value =  data['gender']
+  });
+}
+</script>
+{% endblock js %}
 
 {%endblock content%}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,9 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-
-
-from decouple import config
 
 DEBUG = config('DEBUG',
                default=False,
@@ -86,7 +84,7 @@ WSGI_APPLICATION = 'mohcovid.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-ENV = config('ENV', default='production')
+ENV = config('ENV', default='production') # used if local db driver differeent than production
 
 DATABASES = {
     'default': {
@@ -94,8 +92,8 @@ DATABASES = {
         'NAME': config('DB_NAME', default=''),
         'USER': config('DB_USER', default=''),
         'PASSWORD': config('DB_PASSWORD', default=''),
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': config('DB_HOST', default=''),
+        'PORT': config('DB_PORT', default=''),
     }
 }
 
