@@ -82,6 +82,17 @@ class PatientCreateForm(forms.ModelForm):
     mixed = forms.CharField(widget=forms.Select(choices=YES_NO),max_length=3)
     symptoms = forms.CharField(widget=forms.Select(choices=YES_NO),max_length=3)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+    
+        # self.fields['civil_ID'].widget.attrs['readonly'] = True
+        # self.fields['first_name'].widget.attrs['readonly'] = True
+        # self.fields['last_name'].widget.attrs['readonly'] = True
+        # self.fields['city'].widget.attrs['readonly'] = True
+        # self.fields['nationality'].widget.attrs['readonly'] = True
+        # self.fields['gender'].widget.attrs['readonly'] = True
+        # self.fields['phone'].widget.attrs['readonly'] = True
+
     class Meta:
         model = Patient
         fields = ["civil_ID", "first_name", "last_name", "city", "nationality", "gender", "phone"]
