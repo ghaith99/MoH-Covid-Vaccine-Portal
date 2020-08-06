@@ -1,6 +1,6 @@
 {%load static%}
 
-<script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+      <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
 
 <center>
     <img style="width:200px;height:200px;" src="https://seeklogo.com/images/M/ministry-of-health-kuwait-logo-4F6BD8E365-seeklogo.com.png" alt="" srcset=""><br/>
@@ -10,11 +10,17 @@
     
     <button href="#" onclick=" window.print()"> Print </button>
     
+    <br/>
+    <br/>
+    <a href={% url 'patient_new' %} >
+    <button>Add Another Patient</button>
+    </a>
+
 </center>
 
 <script>
     
-    window.addEventListener("beforeprint", function(event) { $("button").hide(); });
-    window.addEventListener("afterprint", function(event) { $("button").show(); });
+    window.addEventListener("beforeprint", function(event) { $("button").hide();$("a").hide();  });
+    window.addEventListener("afterprint", function(event) { $("button").show(); $("a").show();  });
     
 </script>

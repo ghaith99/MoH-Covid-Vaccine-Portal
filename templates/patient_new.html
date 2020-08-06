@@ -44,7 +44,7 @@
 <script>
  $(document).ready(function() {
     console.log('loaded');
-        if ($(".invalid-feedback").length > 0 ){
+       if ($(".invalid-feedback").length > 0 ){
           document.getElementById('civilid_form').style.display = "none";
           document.getElementById('addpatient_form').style.display = "block";
         }
@@ -65,11 +65,11 @@ function check_civilID(){
         
         add_form = document.getElementById('addpatient_form'); 
         add_form.style.display = "block";
-        add_form.civil_ID.value =  data['civil_ID'];
+        add_form.civil_ID.value =  data['civil_ID']
         add_form.civil_ID.readOnly = true;
 
         add_form.first_name.value =  data['first_name'];
-        add_form.first_name.readOnly = true;9
+        add_form.first_name.readOnly = true;
 
         add_form.last_name.value =  data['last_name'];
         add_form.last_name.readOnly = true;
