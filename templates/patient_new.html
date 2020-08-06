@@ -66,11 +66,22 @@ function check_civilID(){
         add_form = document.getElementById('addpatient_form'); 
         add_form.style.display = "block";
         add_form.civil_ID.value =  data['civil_ID']
+        add_form.civil_ID.disabled="disabled"
+
         add_form.first_name.value =  data['first_name']
+        add_form.first_name.disabled="disabled"
+
         add_form.last_name.value =  data['last_name']
+        add_form.last_name.disabled="disabled"
+
         add_form.city.value =  data['city']
+        add_form.city.disabled="disabled"
+
         add_form.nationality.value =  data['nationality']
+        add_form.nationality.disabled="disabled"
+
         add_form.gender.value =  data['gender']
+        add_form.gender.disabled="disabled"
   });
 }
 </script>
