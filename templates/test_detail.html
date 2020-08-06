@@ -58,7 +58,7 @@
         <label><b> Result Date </b></label>
       </div>
       <div class="col-md-6">
-{% if user.role == 'Admin' or user.role == 'lab' %} 
+{% if user.role == 'Admin' or user.role == 'Lab' %} 
         <p>{{test.result_datetime}}</p>
 {% else %}
           Private
@@ -70,7 +70,7 @@
         <label><b> Result Updated by </b></label>
       </div>
       <div class="col-md-6">
-{% if user.role == 'Admin' or user.role == 'lab' %} 
+{% if user.role == 'Admin' or user.role == 'Lab' %} 
         <p>{{test.lab_doctor.first_name}} {{test.lab_doctor.last_name}} ({{test.lab_doctor.username}}/{{test.lab_doctor.role}}) </p>
 {% else %}
           Private
@@ -82,7 +82,7 @@
         <label><b> Test Result </b></label>
       </div>
       <div class="col-md-6">
-{% if user.role == 'Admin' or user.role == 'lab' %} 
+{% if user.role == 'Admin' or user.role == 'Lab' %} 
         <p>{{test.test_result}}</p>
 {% else %}
           Private
@@ -94,7 +94,7 @@
         <label><b> Test Notes </b></label>
       </div>
       <div class="col-md-6">
-{% if user.role == 'Admin' or user.role == 'lab' %} 
+{% if user.role == 'Admin' or user.role == 'Lab' %} 
         <p>{{test.test_notes}}</p>
 {% else %}
           Private
@@ -106,7 +106,7 @@
         <label><b> Testing Center </b></label>
       </div>
       <div class="col-md-6">
-{% if user.role == 'Admin' or user.role == 'lab' %} 
+{% if user.role == 'Admin' or user.role == 'Lab' %} 
         <p>{{test.testing_center.name}}</p>
 {% else %}
           Private
