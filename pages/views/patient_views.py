@@ -48,12 +48,7 @@ class PatientsListView(LoginRequiredMixin, ListView):
     template_name = "patients_list.html"
     login_url = 'login'
     model = Patient
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     helper = FormHelper()
-    #     helper.form_show_labels = False
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
