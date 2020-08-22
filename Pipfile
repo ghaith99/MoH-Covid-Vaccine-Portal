@@ -20,6 +20,7 @@ qrcode = {extras = ["pil"], version = "*"}
 autopep8 = "*"
 python-decouple = "*"
 psycopg2-binary = "*"
+pydotplus = "*"
 
 [requires]
 python_version = "3.8"

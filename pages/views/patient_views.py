@@ -11,10 +11,12 @@ from django import forms
 from django.db import models
 from mohcovid.utils import send_sms
 from ..models import Test, Patient
+from ..filters import PatientFilter
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
+
 
 class CheckPatientCivilID(LoginRequiredMixin, View):
 
@@ -46,12 +48,21 @@ class PatientsListView(LoginRequiredMixin, ListView):
     template_name = "patients_list.html"
     login_url = 'login'
     model = Patient
-    
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     helper = FormHelper()
+    #     helper.form_show_labels = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
+        return context
+
     def get_queryset(self): #Searchbar Filter Patients
         query = self.request.GET.get('q')
         if query:          
-            #object_list = self.model.objects.filter(civil_ID=query)
-            object_list = self.model.objects.filter( Q(civil_ID__contains=query)        | Q(first_name__contains=query)\
+            object_list = self.model.objects.filter( Q(civil_ID__contains=query)     | Q(first_name__contains=query)\
                                                 | Q(nationality__contains=query)     | Q(gender__contains=query)\
                                                 | Q(first_name__contains=query)      | Q(last_name__contains=query)\
                                                 | Q(phone__contains=query)           | Q(city__contains=query)\
@@ -142,7 +153,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
 
         if(self.request.user.role == 'Field'):
             return HttpResponseRedirect(reverse("test_qrcode",kwargs={'pk': test.pk}))
-            
+
         return super().form_valid(form) # rediret to detailview
 
 
