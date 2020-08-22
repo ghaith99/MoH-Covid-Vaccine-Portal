@@ -8,9 +8,11 @@ from django.conf import settings
 from PIL import Image, ImageDraw
 from io import BytesIO
 from django.core.files import File 
+import string
+import shortuuid
 
 class Patient(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(primary_key=True, max_length=6, editable=False)
     created_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Date'))
     civil_ID = models.CharField(max_length = 25,  unique=True, verbose_name= ('Civil ID'))
     civil_serial = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Civil ID Serial'))
@@ -25,8 +27,15 @@ class Patient(models.Model):
     author = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE, verbose_name= ('Author'))
     comments = models.TextField(null=True, blank=True, max_length=700, verbose_name= ('Comments'))
   
+    def save(self):
+        if not self.id:
+            self.id = shortuuid.ShortUUID(alphabet="01345678ABCDEFG").random(length=6)
+            while Patient.objects.filter(id=self.id).exists():
+                self.id = id_generator()
+        super(Patient, self).save()
+        
     def get_absolute_url(self):
-        return reverse("patient_detail", kwargs={"pk": self.pk})
+        return reverse("patient_detail", kwargs={"pk": self.id})
     
     def __str__(self):
         return self.civil_ID
@@ -59,7 +68,7 @@ class ScreeningCenter(models.Model):
         return reverse("screeningcenter_detail", kwargs={"pk": self.pk})
 
 class Test(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(primary_key=True, max_length=6, editable=False)
     qr_code = models.ImageField(blank=True)
     patient = models.ForeignKey(Patient,  null=True, on_delete=models.SET_NULL, verbose_name= ('Patient Civil ID'), related_name ='patient_tests')
     mixed = models.CharField(default = 'False', choices=(('False','False'), ('True', 'True')), max_length=10, null=True, blank=True, verbose_name= ('Mixed'))
@@ -84,8 +93,17 @@ class Test(models.Model):
             'Sample Date': self.sample_datetime,
             'Result Date': self.result_datetime,
         }
+    
+    def save(self):
+        if not self.id:
+            self.id = shortuuid.ShortUUID(alphabet="01345678ABCDEFG").random(length=6)
+            while Test.objects.filter(id=self.id).exists():
+                self.id = id_generator()
+        super(Test, self).save()
+        
     def get_absolute_url(self):
-        return reverse("test_detail", kwargs={"pk": self.pk})
+        return reverse("test_detail", kwargs={"pk": self.id})
+    
 
     class Meta:
         ordering = ['-sample_datetime']

@@ -1,9 +1,7 @@
 import base64
 import math
 from datetime import datetime
-from io import BytesIO
 
-import qrcode
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -12,8 +10,13 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from PIL import Image, ImageDraw
 
+import qrcode
+from io import BytesIO
+from PIL import Image, ImageDraw
+from barcode.writer import ImageWriter
+from barcode import generate
+import shortuuid
 from mohcovid.utils import send_sms
 from pages.models import Patient, SMSNotification, Test
 
@@ -23,7 +26,12 @@ class TestsQRView(View):
     def get(self, request, pk, *args, **kwargs):  # QR Image generation
 
         test = Test.objects.get(pk=pk)
-        # print(str(test.id))
+        #barcode
+        fp = BytesIO()
+        generate('code39', pk, writer=ImageWriter(), output=fp)
+        fp.seek(0)
+
+        #QR Code
         img = qrcode.make(str(test.id))
         canvas = Image.new('RGB', (350, 370), 'white')
         ImageDraw.Draw(canvas)
@@ -32,13 +40,16 @@ class TestsQRView(View):
         canvas.save(buffer, 'PNG')
         canvas.close()
         buffer.seek(0)
+        
         return render(
             request, 'qrcode.html', {
                 'qrcode': (base64.b64encode(buffer.read()).decode()),
-                'sample_date': test.sample_datetime.strftime("%Y-%m-%d")
+                'test' : test,
+                'sample_date': test.sample_datetime.strftime("%Y-%m-%d"),
+                'patient': test.patient,
+                'barcode': (base64.b64encode(fp.read()).decode())
             }
         )
-
 
 class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test
@@ -59,12 +70,21 @@ class TestsListView(LoginRequiredMixin, ListView):
                 pk=query
             ).order_by('sample_datetime')
         else:
-            if self.request.user.role == 'Admin':
-                object_list = self.model.objects.all()
+            query = self.request.GET.get('t')
+            if query:
+                if self.request.user.role == 'Admin':
+                    object_list = self.model.objects.all()
+                else:
+                    object_list = self.model.objects.filter(
+                        author=self.request.user
+                    ).order_by('-sample_datetime')  # filter on user tests only
             else:
-                object_list = self.model.objects.filter(
-                    author=self.request.user
-                ).order_by('-sample_datetime')  # filter on user tests only
+                if self.request.user.role == 'Admin':
+                        object_list = self.model.objects.all()
+                else:
+                    object_list = self.model.objects.filter(
+                        author=self.request.user
+                    ).order_by('-sample_datetime')  # filter on user tests only
 
         paginator = Paginator(object_list, 10)
         page = self.request.GET.get('page')
@@ -212,14 +232,14 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
         if test.test_result is not None:
             test.result_datetime = datetime.now()
             test.lab_doctor = self.request.user
+            obj, _ = SMSNotification.objects.get_or_create(
+                test=test,
+                sent_status=False
+            )
+            obj.message = test.test_result
+            obj.save()
+            send_sms([obj], 1)
         test.save()
-        obj, _ = SMSNotification.objects.get_or_create(
-            test=test,
-            sent_status=False
-        )
-        obj.message = test.test_result
-        obj.save()
-        send_sms([obj], 1)
         return super().form_valid(form)  # rediret to detailview
 
 

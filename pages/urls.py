@@ -5,19 +5,18 @@ from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, 
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-        path('test/<uuid:pk>/delete/', TestDeleteView.as_view(), name='test_delete'),
-        path('test/<uuid:pk>/edit/', TestUpdateView.as_view(), name='test_edit'),
+        path('test/<str:pk>/delete/', TestDeleteView.as_view(), name='test_delete'),
+        path('test/<str:pk>/edit/', TestUpdateView.as_view(), name='test_edit'),
         path('test/new/', TestCreateView.as_view(), name='test_new'),
-        path('test/<uuid:pk>', TestDetailView.as_view(), name='test_detail'),
+        path('test/<str:pk>', TestDetailView.as_view(), name='test_detail'),
         path('tests/', TestsListView.as_view(), name='tests_list'),
-        path('test/<uuid:pk>/qrcode', TestsQRView.as_view(), name='test_qrcode'),
+        path('test/<str:pk>/qrcode', TestsQRView.as_view(), name='test_qrcode'),
         path('api/tests/', TestsPagination.as_view(), name='tests_json'),
 
-
-        path('patient/<uuid:pk>/delete/', PatientDeleteView.as_view(), name='patient_delete'),
-        path('patient/<uuid:pk>/edit/', PatientUpdateView.as_view(), name='patient_edit'),
+        path('patient/<str:pk>/delete/', PatientDeleteView.as_view(), name='patient_delete'),
+        path('patient/<str:pk>/edit/', PatientUpdateView.as_view(), name='patient_edit'),
         path('patient/new', PatientCreateView.as_view(), name='patient_new'),
-        path('patient/<uuid:pk>', PatientDetailView.as_view(), name='patient_detail'),
+        path('patient/<str:pk>', PatientDetailView.as_view(), name='patient_detail'),
         path('patients/', PatientsListView.as_view(), name='patients_list'),
         path('check_civilID/', CheckPatientCivilID.as_view(), name='check_civilID'),
       

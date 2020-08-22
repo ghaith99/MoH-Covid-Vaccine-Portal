@@ -14,7 +14,7 @@ from ..models import Test, Patient
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponseRedirect
-
+from django.db.models import Q
 
 class CheckPatientCivilID(LoginRequiredMixin, View):
 
@@ -50,7 +50,12 @@ class PatientsListView(LoginRequiredMixin, ListView):
     def get_queryset(self): #Searchbar Filter Patients
         query = self.request.GET.get('q')
         if query:          
-            object_list = self.model.objects.filter(civil_ID=query)
+            #object_list = self.model.objects.filter(civil_ID=query)
+            object_list = self.model.objects.filter( Q(civil_ID__contains=query)        | Q(first_name__contains=query)\
+                                                | Q(nationality__contains=query)     | Q(gender__contains=query)\
+                                                | Q(first_name__contains=query)      | Q(last_name__contains=query)\
+                                                | Q(phone__contains=query)           | Q(city__contains=query)\
+                                                | Q(passport_number__contains=query) | Q(id__contains=query))
         else: 
             if self.request.user.role == 'Admin':
                 object_list =  self.model.objects.all()
@@ -135,7 +140,9 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
             form.add_error(None, "Form Processing Error")
             return super().form_invalid(form)
 
-        return HttpResponseRedirect(reverse("test_qrcode",kwargs={'pk': test.pk}))
+        if(self.request.user.role == 'Field'):
+            return HttpResponseRedirect(reverse("test_qrcode",kwargs={'pk': test.pk}))
+            
         return super().form_valid(form) # rediret to detailview
 
 
