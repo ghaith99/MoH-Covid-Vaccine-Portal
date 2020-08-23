@@ -54,7 +54,44 @@ class TestingCenter(models.Model):
 
     def get_absolute_url(self):
         return reverse("testingcenter_detail", kwargs={"pk": self.pk})
-       
+
+class HealthRegion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("healthregion_detail", kwargs={"pk": self.pk})
+
+class HealthCenter(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
+    health_region = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("healthcenter_detail", kwargs={"pk": self.pk})
+
+class Area(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=50)
+    health_center = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Center'),related_name ='healthcenter_areas')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("area_detail", kwargs={"pk": self.pk})
+
 class ScreeningCenter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
@@ -76,7 +113,6 @@ class Test(models.Model):
     lab_doctor = models.ForeignKey('users.CustomUser',on_delete=models.SET_NULL, null=True, blank=True, verbose_name= ('Lab Doctor'),  related_name='lab_doctor')
     test_result =  models.CharField(choices=((None,''), ('Positive','Positive'), ('Negative', 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
     testing_center = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Testing Center'), related_name ='testingcenter_tests')
-    screening_center = models.ForeignKey(ScreeningCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Screening Center'),related_name ='screeningcenter_tests')
     test_notes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))
     author = models.ForeignKey('users.CustomUser', null=True, on_delete=models.SET_NULL, verbose_name= ('Author'))
     field_user = models.ForeignKey(settings.AUTH_USER_MODEL,null = True, blank = True, on_delete=models.SET_NULL, verbose_name= ('Field User'), related_name='field_user')
