@@ -11,6 +11,46 @@ from django.core.files import File
 import string
 import shortuuid
 
+class HealthRegion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20, null=True, blank=True,)
+    address = models.CharField(max_length=50, null=True, blank=True,)
+    
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("healthregion_detail", kwargs={"pk": self.pk})
+
+
+class HealthCenter(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20, null=True, blank=True,)
+    address = models.CharField(max_length=50, null=True, blank=True,)
+    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("healthcenter_detail", kwargs={"pk": self.pk})
+
+
+class Area(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=50, null=True, blank=True,)
+    health_center = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Center'),related_name ='healthcenter_areas')
+    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_areas')
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("area_detail", kwargs={"pk": self.pk})
+
+
 class Patient(models.Model):
     id = models.CharField(primary_key=True, max_length=6, editable=False)
     created_datetime = models.DateTimeField(default=datetime.now, blank=True, verbose_name= ('Created Date'))
@@ -18,7 +58,7 @@ class Patient(models.Model):
     civil_serial = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Civil ID Serial'))
     passport_number = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Passport Number'))
     phone = models.CharField(max_length=20, verbose_name= ('Phone'))
-    city = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('City'))
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null = True, blank = True, max_length = 25, verbose_name= ('Area'))
     nationality = models.CharField(null = True, blank = True, max_length = 25, verbose_name= ('Nationality'))
     gender = models.CharField(blank=True, max_length=10, choices=(('M', "Male"),('F', "Female")), verbose_name= ('Gender'))
     birthday  =  models.DateField(null=True, blank=True, verbose_name= ('Birthday'))
@@ -55,42 +95,6 @@ class TestingCenter(models.Model):
     def get_absolute_url(self):
         return reverse("testingcenter_detail", kwargs={"pk": self.pk})
 
-class HealthRegion(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20, null=True, blank=True,)
-    address = models.CharField(max_length=50, null=True, blank=True,)
-    
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("healthregion_detail", kwargs={"pk": self.pk})
-
-class HealthCenter(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20, null=True, blank=True,)
-    address = models.CharField(max_length=50, null=True, blank=True,)
-    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("healthcenter_detail", kwargs={"pk": self.pk})
-
-class Area(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-    address = models.CharField(max_length=50, null=True, blank=True,)
-    health_center = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Center'),related_name ='healthcenter_areas')
-    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_areas')
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("area_detail", kwargs={"pk": self.pk})
 
 class ScreeningCenter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

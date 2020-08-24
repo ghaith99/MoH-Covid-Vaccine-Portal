@@ -59,7 +59,7 @@ class PatientsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self): #Searchbar Filter Patients
         object_list =  self.model.objects.all()
-        
+
         query = self.request.GET.get('q')
         if query:          
             object_list = self.model.objects.filter( Q(civil_ID__contains=query)     | Q(first_name__contains=query)\
@@ -98,7 +98,7 @@ class PatientCreateForm(forms.ModelForm):
 
     class Meta:
         model = Patient
-        fields = ["civil_ID", "first_name", "last_name", "city", "nationality", "gender", "phone"]
+        fields = ["civil_ID", "first_name", "last_name", "area", "nationality", "gender", "phone"]
 
 class PatientCreateView(LoginRequiredMixin, CreateView):   
     template_name = 'patient_new.html'
