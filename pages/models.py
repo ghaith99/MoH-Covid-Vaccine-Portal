@@ -46,8 +46,8 @@ class Patient(models.Model):
 class TestingCenter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20, null=True, blank=True,)
+    address = models.CharField(max_length=50, null=True, blank=True,)
 
     def __str__(self):
         return self.name
@@ -57,9 +57,9 @@ class TestingCenter(models.Model):
 
 class HealthRegion(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True, blank=True,)
+    phone = models.CharField(max_length=20, null=True, blank=True,)
+    address = models.CharField(max_length=50, null=True, blank=True,)
     
     def __str__(self):
         return self.name
@@ -70,8 +70,8 @@ class HealthRegion(models.Model):
 class HealthCenter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20, null=True, blank=True,)
+    address = models.CharField(max_length=50, null=True, blank=True,)
     health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
 
     def __str__(self):
@@ -83,7 +83,7 @@ class HealthCenter(models.Model):
 class Area(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    address = models.CharField(max_length=50)
+    address = models.CharField(max_length=50, null=True, blank=True,)
     health_center = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Center'),related_name ='healthcenter_areas')
     health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_areas')
     def __str__(self):
