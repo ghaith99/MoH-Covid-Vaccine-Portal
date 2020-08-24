@@ -57,7 +57,7 @@ class TestingCenter(models.Model):
 
 class HealthRegion(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, null=True, blank=True,)
+    name = models.CharField(max_length=50)
     phone = models.CharField(max_length=20, null=True, blank=True,)
     address = models.CharField(max_length=50, null=True, blank=True,)
     
