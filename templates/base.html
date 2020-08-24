@@ -144,7 +144,7 @@
             </button>
             
             <!-- Topbar Search -->
-            <form action={% block FormSearchAction %}'#'{% endblock FormSearchAction %} class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <form action={% block FormSearchAction %}'#'{% endblock FormSearchAction %} style="width: 30rem;" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-10 navbar-search">
               <div class="input-group">
                 <input name='q' type="text" class="form-control bg-light border-0 small" placeholder="{% block FormSearchPlaceHolder %}Search for...{% endblock FormSearchPlaceHolder %}" aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
@@ -165,9 +165,10 @@
                 </a>
                 <!-- Dropdown - Messages -->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                  <form class="form-inline mr-auto w-100 navbar-search">
+                   <form action={% block FormSearchActionInline %}'#'{% endblock FormSearchActionInline %} class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
-                      <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <input name='q' type="text" class="form-control bg-light border-0 small" placeholder="{% block FormSearchPlaceHolderInline %}Search for...{% endblock FormSearchPlaceHolderInline %}" aria-label="Search" aria-describedby="basic-addon2">
+
                       <div class="input-group-append">
                         <button class="btn btn-primary" type="button">
                           <i class="fas fa-search fa-sm"></i>

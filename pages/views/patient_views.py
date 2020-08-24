@@ -51,13 +51,15 @@ class PatientsListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
+       #context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
 
         context['total_patients'] = Patient.objects.all().count()
        
         return context
 
     def get_queryset(self): #Searchbar Filter Patients
+        object_list =  self.model.objects.all()
+        
         query = self.request.GET.get('q')
         if query:          
             object_list = self.model.objects.filter( Q(civil_ID__contains=query)     | Q(first_name__contains=query)\
@@ -65,12 +67,12 @@ class PatientsListView(LoginRequiredMixin, ListView):
                                                 | Q(first_name__contains=query)      | Q(last_name__contains=query)\
                                                 | Q(phone__contains=query)           | Q(city__contains=query)\
                                                 | Q(passport_number__contains=query) | Q(id__contains=query))
-        else: 
-            if self.request.user.role == 'Admin':
-                object_list =  self.model.objects.all()
-            else:
-                object_list = self.model.objects.filter(author=self.request.user)
-        
+        # else: 
+        #     if self.request.user.role == 'Admin':
+        #         object_list =  self.model.objects.all()
+        #     else:
+        #         object_list = self.model.objects.filter(author=self.request.user)
+         
         paginator = Paginator(object_list, 10)
         page = self.request.GET.get('page')
         if page and page != "":
@@ -79,8 +81,6 @@ class PatientsListView(LoginRequiredMixin, ListView):
         else:
             patients = paginator.get_page(1)
         
-        print(object_list)
-
         return patients
     
 class PatientDetailView(LoginRequiredMixin, DetailView):

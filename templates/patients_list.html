@@ -2,7 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block FormSearchAction %} '/patients/' {% endblock FormSearchAction %}
-{% block FormSearchPlaceHolder %} Search for Patients {% endblock FormSearchPlaceHolder %}
+{% block FormSearchPlaceHolder %} Search for Patients (Name, Phone, Civil ID, Gender, Nationality) {% endblock FormSearchPlaceHolder %}
+{% block FormSearchActionInline %} '/patients/' {% endblock FormSearchActionInline %}
+{% block FormSearchPlaceHolderInline %} Search for Patients (Name, Phone, Civil ID, Gender, Nationality) {% endblock FormSearchPlaceHolderInline %}
+
+
 {% block PatientsActiveNavItem %}active{% endblock PatientsActiveNavItem %}
 
 {% block title %}Patients List{% endblock title %}
@@ -52,7 +56,6 @@
         </div>
       </div>
     </div>
-    <!-- Pending Requests Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card border-left-warning shadow h-100 py-2">
         <div class="card-body">
@@ -69,7 +72,7 @@
       </div>
     </div>
   </div>
-  
+{% comment %}   
   <form method="get">
     
     {{ filter.form.non_field_errors }}
@@ -137,7 +140,7 @@
         <input class="btn btn-primary" value="Search" type="submit" />
         
       </form>
-    </div> 
+    </div>  {% endcomment %}
     <!-- DataTales -->
     <hr/>
     <div class="card shadow mt-3">
@@ -166,7 +169,7 @@
               </tr>
             </tfoot>
             <tbody>   
-              {% for patient in filter.qs %}
+              {% for patient  in object_list.object_list %}
               <tr>
                 <td><a type="button" href="{% url 'patient_detail' patient.pk %}">{{patient.civil_ID}}</a></td>
                 {% if not user.role == 'Lab' %}
