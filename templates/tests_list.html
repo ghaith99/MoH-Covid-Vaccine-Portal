@@ -24,13 +24,24 @@
 {% endif %}
 
 
+            {% if request.GET.health_region  == "منطقة الأحمدي الصحية"%}
+            samme
+            {% endif %}
+
+
 <div class="form-group col-sm-4">
 <form method="GET" id="health_region">
   <label for="sel1">Select Health Region:</label>
   <select class="form-control" name="health_region" onchange="health_region_change()">>
     <option disabled selected value> -- Select an Health Region -- </option>
+            
+
     {% for option in health_regions %}
-      <option>{{option}}</option>
+      {% if option.name in request.GET.health_region %}
+        <option selected="selected">{{request.GET.health_region}}</option>
+      {% else %}
+        <option >{{option}}</option>
+      {% endif %}
     {% endfor %}
   </select>
   </form>
@@ -92,6 +103,7 @@ function health_region_change(){
   form = document.getElementById('health_region');
   form.submit();
 }
+
 </script>
 
 {% endblock content %}
