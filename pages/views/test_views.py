@@ -66,9 +66,9 @@ class TestsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
 
         context['health_regions'] = HealthRegion.objects.all()
+        context['test_result_choices'] = [x for x,y in Test._meta.get_field('test_result').choices]
         
         return context
 

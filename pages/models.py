@@ -115,7 +115,7 @@ class Test(models.Model):
     mixed = models.CharField(default = 'False', choices=(('False','False'), ('True', 'True')), max_length=10, null=True, blank=True, verbose_name= ('Mixed'))
     symptoms = models.CharField(default = 'False', choices=(('False','False'), ('True', 'True')), max_length=10, null=True, blank=True, verbose_name= ('Covid Symptoms'))
     lab_doctor = models.ForeignKey('users.CustomUser',on_delete=models.SET_NULL, null=True, blank=True, verbose_name= ('Lab Doctor'),  related_name='lab_doctor')
-    test_result =  models.CharField(choices=((None,''), ('Positive','Positive'), ('Negative', 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
+    test_result =  models.CharField(choices=(('Positive','Positive'), ('Negative', 'Negative'), ('Equivocal', 'Equivocal'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
     testing_center = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Testing Center'), related_name ='testingcenter_tests')
     screening_center = models.ForeignKey(ScreeningCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Screening Center'), related_name ='Screeningcenter_tests')
     test_notes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))

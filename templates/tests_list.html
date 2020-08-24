@@ -7,103 +7,124 @@
 {% block title %}Tests List{% endblock title %}
 
 {% block content %}
-  {% if user.role == 'Admin' %}
-  <!-- Page Heading -->
+{% if user.role == 'Admin' %}
+<!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">List of Tests</h1>
   <div>
     <a type="button" href={% url 'test_new' %} class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i>Add Test</a>
-  <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
   </div>
 </div>
-  {% endif %}
+{% endif %}
 
 {% if posts.has_previous %}
 <a href="?page=1">First</a>
 <a href="?page={{ posts.previous_page_number }}">Previous</a>
 {% endif %}
 
-
-            {% if request.GET.health_region  == "منطقة الأحمدي الصحية"%}
-            samme
+<div class="form-group ">
+  <form method="GET" id="health_region">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="sel1">Select Health Region:</label>
+          <select class="form-control" name="health_region" onchange="health_region_change()">>
+            <option disabled selected value> -- Select an Health Region -- </option>
+            {% for option in health_regions %}
+            {% if option.name in request.GET.health_region %}
+            <option selected="selected">{{request.GET.health_region}}</option>
+            {% else %}
+            <option >{{option}}</option>
             {% endif %}
-
-
-<div class="form-group col-sm-4">
-<form method="GET" id="health_region">
-  <label for="sel1">Select Health Region:</label>
-  <select class="form-control" name="health_region" onchange="health_region_change()">>
-    <option disabled selected value> -- Select an Health Region -- </option>
-            
-
-    {% for option in health_regions %}
-      {% if option.name in request.GET.health_region %}
-        <option selected="selected">{{request.GET.health_region}}</option>
-      {% else %}
-        <option >{{option}}</option>
-      {% endif %}
-    {% endfor %}
-  </select>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="sel1">Case Type:</label>
+          <select class="form-control" name="test_result" onchange="health_region_change()">>
+            <option disabled selected value> -- Select Case Type -- </option>
+            {% for option in test_result_choices %}
+            {% if option in request.GET.test_result %}
+            <option selected="selected">{{request.GET.test_result}}</option>
+            {% else %}
+            <option >{{option}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="sel1">Test Result Date:</label>
+          
+          {{ request.GET.result_datetime}}
+        </div>
+      </div>
+    </div>
+    
   </form>
 </div>
 
 
 <!-- DataTales -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Patients Tests</h6>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Civil ID</th>
-                  <th>Sample Date</th>
-                  <th>Result Date</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Civil ID</th>
-                  <th>Sample Date</th>
-                  <th>Result Date</th>
-                  <th>Actions</th>
-                </tr>
-              </tfoot>
-                <tbody>     
-        {% for test in object_list.object_list %}
-                <tr>
-                  <td><a href="{% url 'patient_detail' test.patient.pk %}">{{ test.patient.civil_ID }}</a></td>
-                  <td>{{ test.sample_datetime }}</td>
-                  <td>{{ test.result_datetime }}</td>
-                  <td>
-                    <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
-                    <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a href="{% url 'test_qrcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
-                    {% if user.role == 'Admin' %}
-                      <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
-                    {% endif %}
-                  </td>
-                </tr>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Patients Tests</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Civil ID</th>
+            <th>Sample Date</th>
+            <th>Result Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Civil ID</th>
+            <th>Sample Date</th>
+            <th>Result Date</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+        <tbody>     
+          {% for test in object_list.object_list %}
+          <tr>
+            <td><a href="{% url 'patient_detail' test.patient.pk %}">{{ test.patient.civil_ID }}</a></td>
+            <td>{{ test.sample_datetime }}</td>
+            <td>{{ test.result_datetime }}</td>
+            <td>
+              <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
+              <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+              <a href="{% url 'test_qrcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+              {% if user.role == 'Admin' %}
+              <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
+              {% endif %}
+            </td>
+          </tr>
           {% endfor %}
-              </tbody>
-            </table>
-             {%include '_pagination.html'%}
-          </div>
-        </div>
-      </div>
+        </tbody>
+      </table>
+      {%include '_pagination.html'%}
+    </div>
+  </div>
+</div>
 
 
 <script>
-
-function health_region_change(){
-
-  form = document.getElementById('health_region');
-  form.submit();
-}
-
+  
+  function health_region_change(){
+    
+    form = document.getElementById('health_region');
+    form.submit();
+  }
+  
 </script>
 
 {% endblock content %}
