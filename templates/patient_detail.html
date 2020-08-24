@@ -91,6 +91,18 @@
     </div>
     <div class="row">
       <div class="col-md-6">
+        <label><b>Region</b></label> 
+        </div>
+        <div class="col-md-6">
+{% if user.role == 'Admin' or user.role == 'Field' %} 
+         {{patient.area.health_region}}
+{% else %}
+          Private
+{% endif %}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
         <label><b>Gender </b></label> 
         </div>
         <div class="col-md-6">

@@ -158,7 +158,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
 class PatientUpdateView(LoginRequiredMixin, UpdateView):
     model = Patient
     template_name = 'patient_edit.html'
-    fields = ["phone","civil_ID", "area","first_name","last_name", "comments"]
+    fields = ["first_name","last_name", "civil_ID","phone", "area", "comments"]
     login_url = 'login'
 
 
