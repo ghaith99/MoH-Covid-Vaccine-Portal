@@ -72,7 +72,7 @@ class HealthCenter(models.Model):
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=50)
-    health_region = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
+    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_centers')
 
     def __str__(self):
         return self.name
@@ -85,7 +85,7 @@ class Area(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     health_center = models.ForeignKey(HealthCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Center'),related_name ='healthcenter_areas')
-
+    health_region = models.ForeignKey(HealthRegion, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Health Region'),related_name ='healthregion_areas')
     def __str__(self):
         return self.name
 
