@@ -18,7 +18,7 @@ from barcode.writer import ImageWriter
 from barcode import generate
 import shortuuid
 from mohcovid.utils import send_sms
-from pages.models import Patient, SMSNotification, Test
+from pages.models import Patient, SMSNotification, Test, HealthRegion
 
 
 class TestsQRView(View):
@@ -63,28 +63,30 @@ class TestsListView(LoginRequiredMixin, ListView):
     login_url = 'login'
     model = Test
 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['filter'] = PatientFilter(self.request.GET, queryset=Patient.objects.all())
+
+        context['health_regions'] = HealthRegion.objects.all()
+        
+        return context
+
     def get_queryset(self):  # Filter Patients
+        
+        health_region = "*"
+        query = self.request.GET.get('health_region')
+        if query:
+            health_region = query
+
         query = self.request.GET.get('q')
         if query:
             object_list = self.model.objects.filter(
-                pk=query
+                pk=query, 
             ).order_by('sample_datetime')
-        else:
-            query = self.request.GET.get('t')
-            if query:
-                if self.request.user.role == 'Admin':
-                    object_list = self.model.objects.all()
-                else:
-                    object_list = self.model.objects.filter(
-                        author=self.request.user
-                    ).order_by('-sample_datetime')  # filter on user tests only
-            else:
-                if self.request.user.role == 'Admin':
-                        object_list = self.model.objects.all()
-                else:
-                    object_list = self.model.objects.filter(
-                        author=self.request.user
-                    ).order_by('-sample_datetime')  # filter on user tests only
+        else: 
+            object_list = self.model.objects.all().order_by('-sample_datetime') 
+           
 
         paginator = Paginator(object_list, 10)
         page = self.request.GET.get('page')

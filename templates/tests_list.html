@@ -20,9 +20,21 @@
 
 {% if posts.has_previous %}
 <a href="?page=1">First</a>
-<a href="?page={{ posts.previous_page_number }}">Pr\
-evious</a>
+<a href="?page={{ posts.previous_page_number }}">Previous</a>
 {% endif %}
+
+
+<div class="form-group col-sm-3">
+<form method="GET" id="health_region">
+  <label for="sel1">Select Health Region:</label>
+  <select class="form-control" name="health_region" onchange="health_region_change()">>
+    {% for option in health_regions %}
+      <option>{{option}}</option>
+    {% endfor %}
+  </select>
+  </form>
+</div>
+
 
 <!-- DataTales -->
       <div class="card shadow mb-4">
@@ -70,5 +82,15 @@ evious</a>
           </div>
         </div>
       </div>
+
+
+<script>
+
+function health_region_change(){
+
+  form = document.getElementById('health_region');
+  form.submit();
+}
+</script>
 
 {% endblock content %}
