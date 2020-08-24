@@ -24,10 +24,11 @@
 {% endif %}
 
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-4">
 <form method="GET" id="health_region">
   <label for="sel1">Select Health Region:</label>
   <select class="form-control" name="health_region" onchange="health_region_change()">>
+    <option disabled selected value> -- Select an Health Region -- </option>
     {% for option in health_regions %}
       <option>{{option}}</option>
     {% endfor %}

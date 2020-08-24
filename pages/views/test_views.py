@@ -73,20 +73,21 @@ class TestsListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):  # Filter Patients
-        
-        health_region = "*"
-        query = self.request.GET.get('health_region')
-        if query:
-            health_region = query
-
+        health_region = ""
+        health_region = self.request.GET.get('health_region')
         query = self.request.GET.get('q')
-        if query:
-            object_list = self.model.objects.filter(
-                pk=query, 
+
+        object_list = self.model.objects.all().order_by('-sample_datetime') 
+
+        if health_region:
+            object_list = object_list.filter(
+                patient__area__health_region__name = health_region
             ).order_by('sample_datetime')
-        else: 
-            object_list = self.model.objects.all().order_by('-sample_datetime') 
-           
+        if query:
+            object_list = object_list.filter(
+                pk=query
+            ).order_by('sample_datetime')
+         
 
         paginator = Paginator(object_list, 10)
         page = self.request.GET.get('page')

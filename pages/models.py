@@ -117,6 +117,7 @@ class Test(models.Model):
     lab_doctor = models.ForeignKey('users.CustomUser',on_delete=models.SET_NULL, null=True, blank=True, verbose_name= ('Lab Doctor'),  related_name='lab_doctor')
     test_result =  models.CharField(choices=((None,''), ('Positive','Positive'), ('Negative', 'Negative'), ('Equivalent', 'Equivalent'), ('Reject', 'Reject')),max_length=10, blank=True, null=True, default=None, verbose_name= ('Test Result'))
     testing_center = models.ForeignKey(TestingCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Testing Center'), related_name ='testingcenter_tests')
+    screening_center = models.ForeignKey(ScreeningCenter, null=True, blank=True, on_delete=models.SET_NULL, verbose_name= ('Screening Center'), related_name ='Screeningcenter_tests')
     test_notes =  models.TextField(null=True, blank=True, verbose_name= ('Test Notes'))
     author = models.ForeignKey('users.CustomUser', null=True, on_delete=models.SET_NULL, verbose_name= ('Author'))
     field_user = models.ForeignKey(settings.AUTH_USER_MODEL,null = True, blank = True, on_delete=models.SET_NULL, verbose_name= ('Field User'), related_name='field_user')
