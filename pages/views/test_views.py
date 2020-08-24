@@ -63,7 +63,6 @@ class TestsListView(LoginRequiredMixin, ListView):
     login_url = 'login'
     model = Test
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -73,9 +72,17 @@ class TestsListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):  # Filter Patients
-        health_region = ""
-        health_region = self.request.GET.get('health_region')
-        query = self.request.GET.get('q')
+        health_region = None
+        test_result = None
+        result_datetime = None
+        
+        health_region = self.request.GET.get('health_region') 
+        test_result =  self.request.GET.get('test_result')
+        if self.request.GET.get('result_datetime'):
+            result_datetime =  datetime.strptime(self.request.GET.get('result_datetime'), "%Y-%m-%d")
+
+        print(result_datetime)
+        # query = self.request.GET.get('test')
 
         object_list = self.model.objects.all().order_by('-sample_datetime') 
 
@@ -83,10 +90,21 @@ class TestsListView(LoginRequiredMixin, ListView):
             object_list = object_list.filter(
                 patient__area__health_region__name = health_region
             ).order_by('sample_datetime')
-        if query:
+        if test_result:
             object_list = object_list.filter(
-                pk=query
+                test_result = test_result
             ).order_by('sample_datetime')
+        if result_datetime:
+            object_list = object_list.filter(
+                result_datetime__year = result_datetime.year,
+                result_datetime__month = result_datetime.month,
+                result_datetime__day = result_datetime.day,
+            ).order_by('sample_datetime')
+        
+        # if query:
+        #     object_list = object_list.filter(
+        #         pk=query
+        #     ).order_by('sample_datetime')
          
 
         paginator = Paginator(object_list, 10)

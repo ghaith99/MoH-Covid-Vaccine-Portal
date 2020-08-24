@@ -71,7 +71,7 @@
       </div>
       <div class="col-md-6">
 {% if user.role == 'Admin' or user.role == 'Lab' %} 
-        <p>{{test.lab_doctor.first_name}} {{test.lab_doctor.last_name}} ({{test.lab_doctor.username}}/{{test.lab_doctor.role}}) </p>
+        <p>{{test.lab_doctor.first_name}} {{test.lab_doctor.last_name}} </p>
 {% else %}
           Private
 {% endif %}
@@ -126,7 +126,7 @@
         <label><b> Created By </b></label>
       </div>
       <div class="col-md-6">
-        <p>{{test.author.first_name}} {{test.author.last_name}} ({{test.author.username}}/{{test.author.role}}) </p>
+        <p>{{test.author.first_name}} {{test.author.last_name}}  </p>
       </div>
     </div> 
     <div class="row">

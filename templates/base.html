@@ -150,7 +150,7 @@ html {
             </button>
             
             <!-- Topbar Search -->
-            <form action={% block FormSearchAction %}'#'{% endblock FormSearchAction %} style="width: 30rem;" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-10 navbar-search">
+            {% comment %} <form action={% block FormSearchAction %}'#'{% endblock FormSearchAction %} style="width: 30rem;" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-10 navbar-search">
               <div class="input-group">
                 <input name='q' type="text" class="form-control bg-light border-0 small" placeholder="{% block FormSearchPlaceHolder %}Search for...{% endblock FormSearchPlaceHolder %}" aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
@@ -159,7 +159,7 @@ html {
                   </button>
                 </div>
               </div>
-            </form>
+            </form> {% endcomment %}
             
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -312,11 +312,12 @@ html {
 
       <!-- Page level custom scripts -->
       <script> 
-        // Call the dataTables jQuery plugin
+
       $(document).ready(function() {
         $("#id_result_datetime").datepicker({
           format:'yyyy-mm-dd',
         });
+         $("#id_result_datetime").attr("autocomplete", "off");
       });
 
         $('#dataTable').DataTable({

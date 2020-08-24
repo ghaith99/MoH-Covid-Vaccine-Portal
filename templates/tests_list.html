@@ -41,7 +41,7 @@
           </select>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <div class="form-group">
           <label for="sel1">Case Type:</label>
           <select class="form-control" name="test_result" onchange="health_region_change()">>
@@ -56,15 +56,19 @@
           </select>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <div class="form-group">
-          <label for="sel1">Test Result Date:</label>
-          
-          {{ request.GET.result_datetime}}
+          <label >Test Result Date:</label>
+          <input type="text" class="datetimeinput form-control" autocomplete="off" name="result_datetime" id="id_result_datetime" value="{{request.GET.result_datetime}}">
         </div>
       </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+        <input class="bd-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"   value="Search" type="submit" />
+        <input class="bd-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" value="Clear"  type="button" onclick="clearFilter()" />
+      </div>
     </div>
-    
+    </div>
   </form>
 </div>
 
@@ -119,11 +123,12 @@
 
 <script>
   
-  function health_region_change(){
-    
-    form = document.getElementById('health_region');
-    form.submit();
-  }
+    function clearFilter(){
+
+      window.location = "/tests"
+      return false;
+
+    }
   
 </script>
 
