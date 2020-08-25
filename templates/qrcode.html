@@ -2,6 +2,8 @@
 
     <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
 
+
+<div style="margin: auto; width: 50%;">
     <a href={% url 'patient_new' %} >
     <button>Add Another Patient</button>
     </a>
@@ -13,20 +15,27 @@
     <br/>
   
 
-<center>
-    <img style="width:200px;height:200px;" src="https://seeklogo.com/images/M/ministry-of-health-kuwait-logo-4F6BD8E365-seeklogo.com.png" alt="" srcset=""><br/>
-    {% comment %} <img style="width:170px;height:170px;"src="data:image/png;base64, {{qrcode}}"> </img> {% endcomment %}
-    
-    <div style="width: 141px; height: 176px; overflow: hidden"> 
-    <img style="width:170px;height:200px;transform:rotate(-90deg);" src="data:image/png;base64, {{barcode}}"> </img>
-    </div>
-    {{test.id}}
+<div style="width:500px">
 
-    <br/>
-    <p style='font-size:large;'> <b>Sample Date:</b> {{sample_date}} </p>
+    {% comment %} <img style="width:200px;height:200px;" src="/media/moh_logo.png" alt="" srcset=""><br/> {% endcomment %}
+    
+    <center> <h3> {{test.screening_center}} </center> </h3>
+    <b>Civil ID {{patient.civil_ID}} </b> <br/>
+    {{patient.first_name}} {{patient.last_name}}<br/>
+    TeL {{patient.phone}} <br/>
+    
+    {% comment %} <img style="width:170px;height:170px;"src="data:image/png;base64, {{qrcode}}"> </img> {% endcomment %}
+    <div style="height: 80px; overflow: hidden"> 
+        <center><img style="width:350px;height:100px" src="data:image/png;base64, {{barcode}}"> </img></center>
+    </div>
+    <center> {{test.id}}</center>
+    
+    <p style='font-size:medium;'> <b>Sample Req Date:</b> {{sample_date}} </p>
     
     <button href="#" onclick=" window.print()"> Print Labels </button>
-</center>
+</div>
+
+</div>
 
 <script>
     window.addEventListener("beforeprint", function(event) { $("button").hide();$("a").hide();  });
