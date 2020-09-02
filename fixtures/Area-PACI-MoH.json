@@ -63,7 +63,7 @@
   "model": "pages.area",
   "pk": "14cfc1ea-71ae-408d-bb20-65250228b2ac",
   "fields": {
-    "name": "\u0627\u0644\u0635\u0644\u064a\u0628\u062e\u0627\u062a",
+    "name": "\u0627\u0644\u0635\u0644\u064a\u0628\u064a\u062e\u0627\u062a",
     "address": null,
     "health_center": null,
     "health_region": "fdf2e730-7d30-4255-a897-e6bdf104a879"
@@ -93,7 +93,7 @@
   "model": "pages.area",
   "pk": "1cb30467-af94-41a6-b1c8-d9ba85d0f823",
   "fields": {
-    "name": "\u0633\u0639\u062f \u0627\u0644\u0639\u0628\u062f \u0627\u0644\u0644\u0647",
+    "name": "\u0645\u062f\u064a\u0646\u0629 \u0633\u0639\u062f \u0627\u0644\u0639\u0628\u062f\u0627\u0644\u0644\u0647",
     "address": null,
     "health_center": null,
     "health_region": "662fa75e-4069-42c8-80bc-d946afec9df7"
@@ -153,7 +153,7 @@
   "model": "pages.area",
   "pk": "308c0ba5-24e3-4784-9644-e07181c0b087",
   "fields": {
-    "name": "\u0625\u0634\u0628\u064a\u0644\u064a\u0629",
+    "name": "\u0623\u0634\u0628\u064a\u0644\u064a\u0629",
     "address": null,
     "health_center": null,
     "health_region": "dd5b084e-90f7-464d-8e6c-50a62ebb0032"
@@ -233,7 +233,7 @@
   "model": "pages.area",
   "pk": "3ee578f7-e873-4e03-a41c-02544d04031f",
   "fields": {
-    "name": "\u0627\u0644\u0645\u0633\u0627\u064a\u0644 ",
+    "name": "\u0627\u0644\u0645\u0633\u0627\u064a\u0644",
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
@@ -253,7 +253,7 @@
   "model": "pages.area",
   "pk": "44c0335e-b6c6-4c96-842e-d0b76aecead3",
   "fields": {
-    "name": "\u0645\u0632\u0627\u0631\u0639 \u0627\u0644\u0639\u0628\u062f\u0644\u064a",
+    "name": "\u0627\u0644\u0639\u0628\u062f\u0644\u064a",
     "address": null,
     "health_center": null,
     "health_region": "662fa75e-4069-42c8-80bc-d946afec9df7"
@@ -273,7 +273,7 @@
   "model": "pages.area",
   "pk": "45a529c3-7c03-4157-8084-29fe6c1a8acf",
   "fields": {
-    "name": "\u062c\u0627\u0628\u0631 \u0627\u0644\u0639\u0644\u064a",
+    "name": "\u0636\u0627\u062d\u064a\u0629 \u062c\u0627\u0628\u0631 \u0627\u0644\u0639\u0644\u064a",
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
@@ -303,7 +303,7 @@
   "model": "pages.area",
   "pk": "5211b250-d75b-4b9a-95ec-46d6c170d806",
   "fields": {
-    "name": "\u0627\u0644\u062c\u0647\u0631\u0627\u0621 \u0627\u0644\u0642\u062f\u064a\u0645\u0629",
+    "name": "\u0627\u0644\u062c\u0647\u0631\u0627\u0621",
     "address": null,
     "health_center": null,
     "health_region": "662fa75e-4069-42c8-80bc-d946afec9df7"
@@ -403,7 +403,7 @@
   "model": "pages.area",
   "pk": "6aacf9ee-0109-440f-87ae-878c32f31384",
   "fields": {
-    "name": "\u0639\u0628\u062f \u0627\u0644\u0644\u0647 \u0627\u0644\u0645\u0628\u0627\u0631\u0643",
+    "name": "\u063a\u0631\u0628 \u0639\u0628\u062f\u0627\u0644\u0644\u0647 \u0627\u0644\u0645\u0628\u0627\u0631\u0643",
     "address": null,
     "health_center": null,
     "health_region": "dd5b084e-90f7-464d-8e6c-50a62ebb0032"
@@ -417,16 +417,6 @@
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
-  }
-},
-{
-  "model": "pages.area",
-  "pk": "6caa164d-2377-4d01-a6b7-ae913115b997",
-  "fields": {
-    "name": "\u0627\u0644\u0639\u0645\u0627\u0644 \u0645\u0627\u062f\u0629 18",
-    "address": null,
-    "health_center": null,
-    "health_region": "662fa75e-4069-42c8-80bc-d946afec9df7"
   }
 },
 {
@@ -453,7 +443,7 @@
   "model": "pages.area",
   "pk": "78f1e757-66df-45ff-80a8-ff5305754482",
   "fields": {
-    "name": "\u0636\u0627\u062d\u064a\u0629 \u0639\u0628\u062f \u0627\u0644\u0644\u0647 \u0627\u0644\u0633\u0627\u0644\u0645",
+    "name": "\u0636\u0627\u062d\u064a\u0629 \u0639\u0628\u062f\u0627\u0644\u0644\u0647 \u0627\u0644\u0633\u0627\u0644\u0645",
     "address": null,
     "health_center": null,
     "health_region": "fdf2e730-7d30-4255-a897-e6bdf104a879"
@@ -473,7 +463,7 @@
   "model": "pages.area",
   "pk": "7da36314-097a-4b95-992d-4609eb735d04",
   "fields": {
-    "name": "\u0623\u0628\u0648 \u0641\u0637\u064a\u0631\u0629 \u0627\u0644\u0633\u0643\u0646\u064a\u0629",
+    "name": "\u0636\u0627\u062d\u064a\u0629 \u0623\u0628\u0648 \u0641\u0637\u064a\u0631\u0629",
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
@@ -483,7 +473,7 @@
   "model": "pages.area",
   "pk": "7f69da26-ee02-47e8-b209-caf81d1456d6",
   "fields": {
-    "name": "\u0627\u0644\u0634\u0648\u064a\u062e \u0627\u0644\u0633\u0643\u0646\u064a",
+    "name": "\u0627\u0644\u0634\u0648\u064a\u062e",
     "address": null,
     "health_center": null,
     "health_region": "fdf2e730-7d30-4255-a897-e6bdf104a879"
@@ -493,7 +483,7 @@
   "model": "pages.area",
   "pk": "8202c221-2a79-4452-9b11-7e25faf182d2",
   "fields": {
-    "name": "\u0627\u0644\u0627\u0646\u062f\u0644\u0633",
+    "name": "\u0627\u0644\u0623\u0646\u062f\u0644\u0633",
     "address": null,
     "health_center": null,
     "health_region": "dd5b084e-90f7-464d-8e6c-50a62ebb0032"
@@ -553,7 +543,7 @@
   "model": "pages.area",
   "pk": "9659478b-19c0-4b83-b78f-30c1a22012be",
   "fields": {
-    "name": "\u063a\u0631\u0628 \u0645\u0634\u0631\u0641",
+    "name": "\u0645\u0634\u0631\u0641",
     "address": null,
     "health_center": null,
     "health_region": "b1dc725b-22fc-4f99-ab5a-c0d3a5920028"
@@ -663,7 +653,7 @@
   "model": "pages.area",
   "pk": "bfb080f3-8529-4f51-9a61-c968ab7da9f5",
   "fields": {
-    "name": "\u0627\u0644\u062c\u0644\u064a\u0628",
+    "name": "\u062c\u0644\u064a\u0628 \u0627\u0644\u0634\u064a\u0648\u062e",
     "address": null,
     "health_center": null,
     "health_region": "dd5b084e-90f7-464d-8e6c-50a62ebb0032"
@@ -773,20 +763,10 @@
   "model": "pages.area",
   "pk": "dc00b5aa-7837-4d16-a698-c4b95dbb8752",
   "fields": {
-    "name": "\u0634\u0645\u0627\u0644 \u063a\u0631\u0628 \u0627\u0644\u0635\u0644\u064a\u0628\u062e\u0627\u062a",
+    "name": "\u0634\u0645\u0627\u0644 \u063a\u0631\u0628 \u0627\u0644\u0635\u0644\u064a\u0628\u064a\u062e\u0627\u062a",
     "address": null,
     "health_center": null,
     "health_region": "fdf2e730-7d30-4255-a897-e6bdf104a879"
-  }
-},
-{
-  "model": "pages.area",
-  "pk": "defd7baf-1402-4fb1-90c2-5f016a8a96b7",
-  "fields": {
-    "name": "\u0627\u0644\u0639\u0645\u0627\u0644 \u0645\u0627\u062f\u0629 18",
-    "address": null,
-    "health_center": null,
-    "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
   }
 },
 {
@@ -833,7 +813,7 @@
   "model": "pages.area",
   "pk": "e397fd2b-0a37-4ab3-bc46-b3022c5e6a0c",
   "fields": {
-    "name": "\u0627\u0644\u0648\u0641\u0631\u0629 \u0627\u0644\u0633\u0643\u0646\u064a\u0629",
+    "name": "\u0627\u0644\u0648\u0641\u0631\u0629 \u0627\u0644\u062c\u062f\u064a\u062f\u0629",
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"
@@ -853,7 +833,7 @@
   "model": "pages.area",
   "pk": "e761e5bd-3582-40b7-b61f-21d7c637650e",
   "fields": {
-    "name": "\u0627\u0644\u0641\u0646\u064a\u0637\u064a\u0633",
+    "name": "\u0636\u0627\u062d\u064a\u0629 \u0627\u0644\u0641\u0646\u064a\u0637\u064a\u0633",
     "address": null,
     "health_center": null,
     "health_region": "14804e99-d41e-4f7b-aa0d-6b695c74307e"

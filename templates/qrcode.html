@@ -3,36 +3,32 @@
     <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
 
 
-<div style="margin: auto; width: 50%;">
-    <a href={% url 'patient_new' %} >
+<div>
+ <div style="width:500px;font-size:large;">
+
+    {% comment %} <img style="width:200px;height:200px;" src="/media/moh_logo.png" alt="" srcset=""><br/> {% endcomment %}
+    
+    <center> <h2> {{test.screening_center}} </center> </h2>
+    <b>Civil ID {{patient.civil_ID}} </b> <br/>
+    {{patient.first_name}} {{patient.last_name}}<br/>
+    TeL {{patient.phone}} <br/>
+    
+    {% comment %} <img style="width:170px;height:170px;"src="data:image/png;base64, {{qrcode}}"> </img> {% endcomment %}
+    <div style="height: 150px; overflow: hidden"> 
+        <center><img style="width:450px;height:200px" src="data:image/png;base64, {{barcode}}"> </img></center>
+    </div>
+    <center> {{test.id}}</center>
+    
+    <p style='font-size:large;'> <b>Sample Req Date:</b> {{sample_date}} </p>
+    
+    <button href="#" onclick=" window.print()"> Print Labels </button>
+       <a href={% url 'patient_new' %} >
     <button>Add Another Patient</button>
     </a>
     <br/>
     <a href={% url 'patient_edit' patient.pk %} >
     <button>Edit Patient</button>
     </a>  
-    <br/>
-    <br/>
-  
-
-<div style="width:500px">
-
-    {% comment %} <img style="width:200px;height:200px;" src="/media/moh_logo.png" alt="" srcset=""><br/> {% endcomment %}
-    
-    <center> <h3> {{test.screening_center}} </center> </h3>
-    <b>Civil ID {{patient.civil_ID}} </b> <br/>
-    {{patient.first_name}} {{patient.last_name}}<br/>
-    TeL {{patient.phone}} <br/>
-    
-    {% comment %} <img style="width:170px;height:170px;"src="data:image/png;base64, {{qrcode}}"> </img> {% endcomment %}
-    <div style="height: 80px; overflow: hidden"> 
-        <center><img style="width:350px;height:100px" src="data:image/png;base64, {{barcode}}"> </img></center>
-    </div>
-    <center> {{test.id}}</center>
-    
-    <p style='font-size:medium;'> <b>Sample Req Date:</b> {{sample_date}} </p>
-    
-    <button href="#" onclick=" window.print()"> Print Labels </button>
 </div>
 
 </div>
