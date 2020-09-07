@@ -51,6 +51,22 @@ class TestsQRView(View):
             }
         )
 
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import weasyprint
+
+def TestCertificate(request, test_id):
+    test = get_object_or_404(TEST, id=test_id)
+    html = render_to_string('cert.html',
+                            {'test': test})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=test_{test.id}.pdf'
+    weasyprint.HTML(string=html).write_pdf(response,
+        stylesheets=[weasyprint.CSS(
+            settings.STATIC_ROOT + 'css/pdf.css')])
+    return response
+
 class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test
     template_name = 'home.html'
@@ -213,7 +229,7 @@ class TestCreateView(LoginRequiredMixin,  CreateView):
             test.result_datetime = datetime.now()
             test.lab_doctor = self.request.user
             obj = SMSNotification.objects.create(test=test, message='negative')
-            send_sms([obj], 1)
+            send_sms.delay([obj], 1)
         
         test.save()
 

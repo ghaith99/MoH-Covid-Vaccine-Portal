@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'qr_code',
     'django_extensions',
     'django_filters',
+    'celery'
 ]
 
 MIDDLEWARE = [

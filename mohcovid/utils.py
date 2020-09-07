@@ -1,7 +1,5 @@
 import json
-
 import requests
-
 
 def send_sms(queryset, size):
     print('received', queryset)
