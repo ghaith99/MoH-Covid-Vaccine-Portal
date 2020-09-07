@@ -10,6 +10,7 @@ python manage.py makemigrations users
 python manage.py migrate users
 python manage.py makemigrations pages
 python manage.py migrate pages
+python manage.py migrate # migrates admins, sessions
 ```
 
 # Known Issue
