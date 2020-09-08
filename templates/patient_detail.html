@@ -173,7 +173,7 @@
                   <td>
                     <a type="button" href="{% url 'test_detail' test.pk %}" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></a>
                     <a type="button" href="{% url 'test_edit' test.pk %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <a href="{% url 'test_qrcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
+                    <a href="{% url 'test_barcode' test.pk %}" target="_blank" class="btn btn-sm btn-dark"><i class="fas fa-qrcode"></i></a>
                     {% if user.role == 'Admin' %}
                       <a type="button" href="{% url 'test_delete' test.pk %}" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a>
                     {% endif %}
