@@ -20,8 +20,59 @@ import shortuuid
 from mohcovid.utils import send_sms
 from pages.models import Patient, SMSNotification, Test, HealthRegion
 
+from django.conf import settings
+from django.template.loader import render_to_string
+import weasyprint
 
-class TestsQRView(View):
+import csv
+from django.http import HttpResponse
+
+class TestsExport(View):
+     def get(self, request, *args, **kwargs): 
+        
+        health_region = self.request.GET.get('health_region') 
+        test_result =  self.request.GET.get('test_result')
+        if self.request.GET.get('result_datetime'):
+            result_datetime =  datetime.strptime(self.request.GET.get('result_datetime'), "%Y-%m-%d")
+
+        object_list = Test.objects.all().order_by('-sample_datetime') 
+
+        if health_region:
+            object_list = object_list.filter(
+                patient__area__health_region__name = health_region
+            ).order_by('sample_datetime')
+        if test_result:
+            object_list = object_list.filter(
+                test_result = test_result
+            ).order_by('sample_datetime')
+        if result_datetime:
+            object_list = object_list.filter(
+                result_datetime__year = result_datetime.year,
+                result_datetime__month = result_datetime.month,
+                result_datetime__day = result_datetime.day,
+            ).order_by('sample_datetime')
+
+        opts = Test._meta
+        content_disposition = 'attachment; filename={opts.verbose_name}.csv'
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = content_disposition
+        writer = csv.writer(response)
+        fields = [field for field in opts.get_fields() if not field.many_to_many and not field.one_to_many]
+        # Write a first row with header information
+        writer.writerow([field.verbose_name for field in fields])
+        # Write data rows
+        for obj in object_list:
+            data_row = []
+            for field in fields:
+                value = getattr(obj, field.name)
+                if isinstance(value, datetime.datetime):
+                    value = value.strftime('%d/%m/%Y')
+                data_row.append(value)
+            writer.writerow(data_row)
+        return response
+
+
+class TestsBarCodeView(View):
 
     def get(self, request, pk, *args, **kwargs):  # QR Image generation
 
@@ -51,10 +102,6 @@ class TestsQRView(View):
             }
         )
 
-from django.conf import settings
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-import weasyprint
 
 def TestCertificate(request, test_id):
     test = get_object_or_404(TEST, id=test_id)
@@ -66,6 +113,7 @@ def TestCertificate(request, test_id):
         stylesheets=[weasyprint.CSS(
             settings.STATIC_ROOT + 'css/pdf.css')])
     return response
+
 
 class HomePageView(LoginRequiredMixin, TemplateView):
     model = Test

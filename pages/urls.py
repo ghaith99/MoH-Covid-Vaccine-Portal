@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import HomePageView, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, TestsPagination, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, CheckPatientCivilID, TestsQRView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
+from .views import HomePageView, TestsExport, TestsListView, TestDetailView, TestCreateView, TestDeleteView, TestUpdateView, TestsPagination, PatientsListView, PatientDetailView, PatientCreateView, PatientDeleteView, PatientUpdateView, CheckPatientCivilID, TestsBarCodeView, ScreeningCenterDeleteView,ScreeningCenterUpdateView,ScreeningCenterCreateView,ScreeningCenterDetailView,ScreeningCentersListView, TestingCenterDeleteView,TestingCenterUpdateView,TestingCenterCreateView,TestingCenterDetailView,TestingCentersListView
 
 from django.views.generic.base import TemplateView
 
@@ -8,9 +8,10 @@ urlpatterns = [
         path('test/<str:pk>/delete/', TestDeleteView.as_view(), name='test_delete'),
         path('test/<str:pk>/edit/', TestUpdateView.as_view(), name='test_edit'),
         path('test/new/', TestCreateView.as_view(), name='test_new'),
+        path('test/export_csv', TestsExport.as_view(), name='tests_export'),
         path('test/<str:pk>', TestDetailView.as_view(), name='test_detail'),
         path('tests/', TestsListView.as_view(), name='tests_list'),
-        path('test/<str:pk>/qrcode', TestsQRView.as_view(), name='test_qrcode'),
+        path('test/<str:pk>/barcode', TestsBarCodeView.as_view(), name='test_barcode'),
         path('api/tests/', TestsPagination.as_view(), name='tests_json'),
 
         path('patient/<str:pk>/delete/', PatientDeleteView.as_view(), name='patient_delete'),

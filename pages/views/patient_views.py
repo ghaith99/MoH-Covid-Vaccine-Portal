@@ -146,7 +146,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
             return super().form_invalid(form)
 
         if(self.request.user.role == 'Field'):
-            return HttpResponseRedirect(reverse("test_qrcode",kwargs={'pk': test.pk}))
+            return HttpResponseRedirect(reverse("test_barcode",kwargs={'pk': test.pk}))
 
         return super().form_valid(form) # rediret to detailview
 
