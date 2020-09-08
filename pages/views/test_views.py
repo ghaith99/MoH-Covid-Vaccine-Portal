@@ -35,40 +35,40 @@ class TestsExport(View):
         if self.request.GET.get('result_datetime'):
             result_datetime =  datetime.strptime(self.request.GET.get('result_datetime'), "%Y-%m-%d")
 
-        object_list = Test.objects.all().order_by('-sample_datetime') 
+        filtered_tests = Test.objects.all().order_by('-sample_datetime') 
 
         if health_region:
-            object_list = object_list.filter(
+            filtered_tests = filtered_tests.filter(
                 patient__area__health_region__name = health_region
             ).order_by('sample_datetime')
         if test_result:
-            object_list = object_list.filter(
+            filtered_tests = filtered_tests.filter(
                 test_result = test_result
             ).order_by('sample_datetime')
         if result_datetime:
-            object_list = object_list.filter(
+            filtered_tests = filtered_tests.filter(
                 result_datetime__year = result_datetime.year,
                 result_datetime__month = result_datetime.month,
                 result_datetime__day = result_datetime.day,
             ).order_by('sample_datetime')
-
-        opts = Test._meta
-        content_disposition = 'attachment; filename={opts.verbose_name}.csv'
+        
+        print(filtered_tests)
+ 
+        content_disposition = 'attachment; filename={result_datetime}-Daily_Report.csv'.format(result_datetime=result_datetime)
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = content_disposition
+        response.write(u'\ufeff'.encode('utf8'))
         writer = csv.writer(response)
-        fields = [field for field in opts.get_fields() if not field.many_to_many and not field.one_to_many]
+        
+        writer.writerow([result_datetime.strftime("%Y-%m-%d") + " Report - "+ test_result + " Cases in " + health_region])
+        writer.writerow([])
+
+        fields = ['Civil ID', 'Name', 'Age', 'Phone', 'Area', 'District']
         # Write a first row with header information
-        writer.writerow([field.verbose_name for field in fields])
+        writer.writerow(fields)
         # Write data rows
-        for obj in object_list:
-            data_row = []
-            for field in fields:
-                value = getattr(obj, field.name)
-                if isinstance(value, datetime.datetime):
-                    value = value.strftime('%d/%m/%Y')
-                data_row.append(value)
-            writer.writerow(data_row)
+        for test in filtered_tests:
+            writer.writerow([test.patient.civil_ID, test.patient.first_name +" "+ test.patient.last_name, datetime.now().year - test.patient.birthday.year, test.patient.phone, test.patient.area.name, test.patient.area.health_region.name ])
         return response
 
 
